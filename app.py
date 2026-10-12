@@ -11,11 +11,11 @@ from specguard.parser import DocumentError, parse_document
 from specguard.pipeline import analyze
 from specguard.reconciliation import correction_checks, order_status, resolve_issue
 from specguard.reporting import clarification_text, conflict_csv, full_report, json_report
+from specguard.ui import render_header, render_sidebar
 
 ROOT = Path(__file__).resolve().parent
-st.set_page_config(page_title="SpecGuard AI", page_icon="🛡️", layout="wide")
-st.title("SpecGuard AI")
-st.caption("Manufacturing Order Intelligence · Evidence before production")
+st.set_page_config(page_title="SpecGuard AI", page_icon="🛡️", layout="wide", initial_sidebar_state="expanded")
+render_header()
 try:
     config = load_config()
 except ValueError as exc:
@@ -34,13 +34,6 @@ else:
         except ExtractionError as exc:
             st.session_state.connection = str(exc)
     st.caption(st.session_state.get("connection", "Connection not checked in this session."))
-
-with st.sidebar:
-    st.subheader("Order workspace")
-    st.write("One product and one order per analysis.")
-    st.write("1. Add documents\n2. Inspect extracted facts\n3. Compare requirements\n4. Record decisions\n5. Export the audit trail")
-    st.divider()
-    st.caption("Local session storage only. Download reports before closing the browser. Production approval remains a separate human decision.")
 
 st.header("1 · Document Upload")
 source = st.radio("Document source", ["Synthetic sample", "Upload documents"], horizontal=True)
@@ -108,6 +101,7 @@ else:
 st.header("3 · Analyze Order")
 if st.button("Compare requirements", disabled=result is None):
     st.session_state.compared = True
+render_sidebar(config.mode)
 if not result or not st.session_state.get("compared"):
     st.stop()
 issues = result["issues"]
