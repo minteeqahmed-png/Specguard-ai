@@ -1,0 +1,10 @@
+# SpecGuard AI — pitch outline
+
+1. **The costly handoff.** A buyer message, a technical PDF and a size spreadsheet describe the same order differently. The intended user is a small or medium manufacturer’s order coordinator.
+2. **Evidence before production.** Extract requirements, compare them, show the conflicting source statements, and ask a precise clarification question. Demonstrate the real working dashboard.
+3. **A clear division of responsibility.** AMD-hosted language inference extracts facts; Pydantic validates structure; deterministic rules compare requirements; people resolve conflicts and authorize production. Demo Mode must be labeled separately until live execution is verified.
+4. **Evaluation, honestly stated.** Use the latest real results file, naming its mode and date. The 27 synthetic cases are regression tests, not customer trials. Include actual GPU evidence only after successful AMD execution.
+5. **Business potential.** Expected benefits are less manual comparison, fewer avoidable errors and better traceability. Test these hypotheses with manufacturer interviews and measured pilot orders. A future per-order fee or monthly subscription may fit small manufacturers; pricing and savings are not yet validated.
+6. **Next milestone.** Complete AMD MI300X integration, measure end-to-end and inference-request latency, then evaluate diverse independently annotated orders. Defer payments, ERP integration and multi-item support until the core is validated.
+
+Target Reinvent Commerce; manufacturing quality also relates to Intelligent Industry. The [official event page](https://lablab.ai/ai-hackathons/amd-developer-hackathon-act-iii) requires meaningful AMD work in the demonstrated product and lists prototype, descriptions, selected challenge, technology tags, cover image, demo video and pitch presentation. Check current organizer requirements before submitting. Project planning deadline supplied by the owner: October 18, 2026, 8:00 PM PKT; aim to finish October 17. This file is a slide-content outline, not a completed slide deck.

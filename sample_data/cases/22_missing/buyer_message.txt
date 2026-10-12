@@ -1,0 +1,6 @@
+Product: Custom hoodie
+Quantity: 500
+Unit: pieces
+Color: navy blue
+Printing: sublimation
+Deadline: 2026-11-20

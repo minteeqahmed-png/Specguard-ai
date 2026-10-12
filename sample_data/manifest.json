@@ -1,0 +1,110 @@
+[
+  {
+    "id": "01_consistent",
+    "group": "consistent"
+  },
+  {
+    "id": "02_consistent",
+    "group": "consistent"
+  },
+  {
+    "id": "03_consistent",
+    "group": "consistent"
+  },
+  {
+    "id": "04_consistent",
+    "group": "consistent"
+  },
+  {
+    "id": "05_consistent",
+    "group": "consistent"
+  },
+  {
+    "id": "06_consistent",
+    "group": "consistent"
+  },
+  {
+    "id": "07_quantity",
+    "group": "quantity"
+  },
+  {
+    "id": "08_quantity",
+    "group": "quantity"
+  },
+  {
+    "id": "09_quantity",
+    "group": "quantity"
+  },
+  {
+    "id": "10_quantity",
+    "group": "quantity"
+  },
+  {
+    "id": "11_quantity",
+    "group": "quantity"
+  },
+  {
+    "id": "12_color",
+    "group": "color"
+  },
+  {
+    "id": "13_color",
+    "group": "color"
+  },
+  {
+    "id": "14_color",
+    "group": "color"
+  },
+  {
+    "id": "15_color",
+    "group": "color"
+  },
+  {
+    "id": "16_material",
+    "group": "material"
+  },
+  {
+    "id": "17_material",
+    "group": "material"
+  },
+  {
+    "id": "18_material",
+    "group": "material"
+  },
+  {
+    "id": "19_printing",
+    "group": "printing"
+  },
+  {
+    "id": "20_printing",
+    "group": "printing"
+  },
+  {
+    "id": "21_printing",
+    "group": "printing"
+  },
+  {
+    "id": "22_missing",
+    "group": "missing"
+  },
+  {
+    "id": "23_missing",
+    "group": "missing"
+  },
+  {
+    "id": "24_missing",
+    "group": "missing"
+  },
+  {
+    "id": "25_multi",
+    "group": "multi"
+  },
+  {
+    "id": "26_multi",
+    "group": "multi"
+  },
+  {
+    "id": "27_multi",
+    "group": "multi"
+  }
+]

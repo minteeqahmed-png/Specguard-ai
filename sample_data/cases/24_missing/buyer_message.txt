@@ -1,0 +1,6 @@
+Product: Team tracksuit
+Quantity: 500
+Unit: pieces
+Color: navy blue
+Material: polyester
+Deadline: 2026-11-20
