@@ -5,7 +5,7 @@ flowchart LR
   A[Streamlit uploads] --> B[Local TXT / PDF / CSV parser]
   B --> C{Configured mode}
   C --> D[Labeled template demo extraction]
-  C --> E[SSH tunnel to AMD vLLM]
+  C --> E[AMD Token Factory or private vLLM endpoint]
   D --> F[Pydantic and source evidence checks]
   E --> F
   F --> G[Deterministic reconciliation]
@@ -15,9 +15,9 @@ flowchart LR
   J --> K[JSON / CSV / TXT reports]
 ```
 
-`parser.py` retains line, PDF page and CSV record locations. CSV record numbers refer to logical records, not physical lines when quoted multiline cells occur. PyMuPDF extracts text; complex PDF tables are not reconstructed into cells. File bytes are hashed to identify the source version.
+`parser.py` retains line, PDF page and CSV record locations. CSV record numbers refer to logical records, not physical lines when quoted multiline cells occur. pypdf extracts text; complex PDF tables are not reconstructed into cells. File bytes are hashed to identify the source version.
 
-`schemas.py` rejects invalid quantities, ambiguous/invalid dates, extra payload properties and empty evidence. Unknown fields are absent, never filled with invented defaults. `ai_client.py` verifies that the quoted text occurs at the supplied source location. This proves quote presence, not semantic correctness or extraction completeness: humans must still inspect the facts.
+`schemas.py` rejects invalid quantities, ambiguous/invalid dates, extra payload properties and empty evidence. Unknown fields are absent, never filled with invented defaults. `ai_client.py` verifies that the quoted text occurs at the supplied source location. It then independently parses supported labeled templates and size,quantity CSVs. Every source fact must match a model field/value and supporting quote; omissions, extra facts, duplicates and changed size rows fail validation. The same bounded retry applies. Live facts are never replaced with template facts. Unrecognized content gets verification=review_required; the pipeline blocks READY while preserving its extraction for inspection. Verification covers parsed template text, not visual PDF fidelity or unrestricted language semantics.
 
 Demo Mode is an explicit template parser. Live Mode sends extracted document text to the configured OpenAI-compatible endpoint and validates every response. HTTP timeouts, inaccessible endpoints, non-JSON results, invalid schema, missing evidence and truncated responses produce failures. No automatic demo fallback is allowed. Live output requests JSON-object mode; support depends on the installed server/model combination.
 

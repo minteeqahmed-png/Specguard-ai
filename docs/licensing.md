@@ -1,7 +1,18 @@
 # Licensing
 
-SpecGuard AI is licensed under GNU AGPL version 3.0 only; see `LICENSE`. Copyright 2026 SpecGuard AI contributors.
+SpecGuard AI project code is licensed under MIT; see `LICENSE`. Copyright 2026 SpecGuard AI contributors. This revision replaces PyMuPDF with pypdf for extraction and ReportLab for synthetic PDF generation. PyMuPDF is no longer a dependency. Earlier revisions retain their published license.
 
-The requested PDF library, PyMuPDF, is offered under AGPL or an Artifex commercial license. This open-source implementation uses the AGPL option, so it does not describe the combined application as MIT-only. [PyMuPDF licensing](https://pymupdf.readthedocs.io/en/latest/about.html#license-and-copyright)
+The event requires original, MIT-compliant submissions: [AMD ACT III requirements](https://lablab.ai/ai-hackathons/amd-developer-hackathon-act-iii). Removing the AGPL PDF dependency addresses that project licensing blocker; it does not certify event eligibility or replace submission review.
 
-Streamlit, Pydantic, HTTPX, python-dotenv and Pytest retain their own licenses and notices in their distributions. The pinned Python environment includes transitive packages; redistribution must preserve applicable notices. Model weights and the GPU serving environment are separate downloads with their own license terms. If a closed-source commercial product is planned, reassess the PDF dependency or obtain the appropriate commercial rights before distribution.
+Third-party distributions retain their own licenses and notices. Do not relabel them MIT or strip their license files when redistributing an environment or container:
+
+| Dependency | License / source |
+| --- | --- |
+| pypdf | BSD-3-Clause; [project license](https://github.com/py-pdf/pypdf/blob/main/LICENSE) |
+| ReportLab open-source toolkit | BSD; [developer FAQ](https://docs.reportlab.com/developerfaqs/) |
+| Streamlit, PyArrow, Requests | Apache-2.0 |
+| Pydantic, Pytest | MIT |
+| HTTPX, python-dotenv | BSD-3-Clause in the pinned distributions |
+| certifi (transitive) | MPL-2.0; its unmodified certificate bundle remains under its own license |
+
+`requirements-lock.txt` records the checked dependency versions. Their installed distributions include upstream notices, including bundled component notices. Model weights, hosted API services and any self-hosted GPU image have separate terms and are not relicensed by this repository. No model weights or API credentials are distributed here.

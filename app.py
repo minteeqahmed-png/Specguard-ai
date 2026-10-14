@@ -93,6 +93,7 @@ if result:
         st.error(f"{error['source']}: {error['message']}")
     for extraction in result["extractions"]:
         with st.expander(f"{extraction.source} · {len(extraction.facts)} extracted facts", expanded=True):
+            st.caption("Source template verified" if extraction.verification == "template_verified" else "Source review required · completeness unverified")
             st.dataframe([{"Field": f.field, "Value": json.dumps(f.value) if isinstance(f.value, dict) else str(f.value), "Evidence": f.quote, "Location": f.location} for f in extraction.facts], width="stretch", hide_index=True)
     st.caption(f"Processed {len(result['extractions'])}/{len(inputs)} documents in {result['elapsed']:.2f} seconds. Timing includes local processing and any network requests.")
 else:

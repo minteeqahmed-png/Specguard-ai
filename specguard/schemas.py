@@ -49,6 +49,7 @@ class Extraction(BaseModel):
     facts: tuple[Fact, ...]
     inference_seconds: float | None = None
     model: str | None = None
+    verification: Literal["template_verified", "review_required"] = "review_required"
 
 
 class Observation(BaseModel):

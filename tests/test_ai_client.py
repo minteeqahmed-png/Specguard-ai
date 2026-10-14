@@ -145,3 +145,74 @@ def test_empty_facts_cannot_count_as_a_successfully_processed_document():
     assert not result["complete"] and not result["extractions"]
     assert "No supported facts" in result["errors"][0]["message"]
     assert order_status(result["issues"], [], complete=result["complete"]) == "REVIEW"
+
+
+BASE_ORDER = "Product: Football jersey\nQuantity: 500\nUnit: pieces\nColor: navy blue\nMaterial: polyester\nPrinting: sublimation"
+
+
+@pytest.mark.parametrize("fault", ["wrong_value", "omitted_quantity"])
+def test_conflicting_source_cannot_become_ready_with_valid_but_incorrect_model_facts(fault):
+    from specguard.ai_client import demo_extract
+    def handler(request):
+        segments = json.loads(json.loads(request.content)["messages"][1]["content"])
+        text = "\n".join(s["text"] for s in segments)
+        facts = [f.model_dump() for f in demo_extract(parse_document("source.txt", text.encode())).facts]
+        if "Quantity: 450" in text:
+            if fault == "wrong_value":
+                next(f for f in facts if f["field"] == "quantity")["value"] = 500
+            else:
+                facts = [f for f in facts if f["field"] != "quantity"]
+        return response({"facts": facts})
+    result = analyze([("buyer.txt", BASE_ORDER.encode()), ("tech.txt", BASE_ORDER.replace("500", "450").encode())], client(handler))
+    assert not result["complete"]
+    assert order_status(result["issues"], [], complete=result["complete"], extractions=result["extractions"]) != "READY"
+    assert any(e["source"] == "tech.txt" for e in result["errors"])
+
+
+def test_freeform_omission_remains_reviewable_but_cannot_be_ready():
+    from specguard.ai_client import demo_extract
+    facts = [f.model_dump() for f in demo_extract(parse_document("buyer.txt", BASE_ORDER.encode())).facts]
+    result = analyze([("buyer.txt", (BASE_ORDER + "\nActually make only 450 instead.").encode())], client(lambda r: response({"facts": facts})))
+    assert result["extractions"]  # Preserve model output for inspection, without claiming completeness.
+    assert not result["complete"]
+    assert order_status(result["issues"], [], complete=result["complete"]) == "REVIEW"
+
+
+@pytest.mark.parametrize("value", [{"S": 101, "M": 149}, {"S": 100}])
+def test_size_table_changed_or_omitted_rows_are_rejected(value):
+    document = parse_document("sizes.csv", b"size,quantity\nS,100\nM,150\n")
+    with pytest.raises(ExtractionError):
+        client(lambda r: response({"facts": [{"field": "size_quantities", "value": value, "quote": document.text, "location": "document"}]})).extract(document)
+
+
+def test_same_document_contradiction_cannot_be_omitted():
+    with pytest.raises(ExtractionError):
+        client(lambda r: response()).extract(parse_document("buyer.txt", b"Quantity: 500\nQuantity: 450"))
+
+
+def test_source_validation_retry_can_recover_without_replacing_model_facts():
+    calls = []
+    def handler(request):
+        calls.append(request)
+        return response({"facts": [{"field": "quantity", "value": 450, "quote": "Quantity: 500", "location": "line 1"}]}) if len(calls) == 1 else response()
+    extraction = client(handler).extract(DOC)
+    assert len(calls) == 2 and extraction.mode == "live"
+    assert extraction.verification == "template_verified"
+    assert extraction.facts[0].value == 500
+
+
+def test_unverified_live_extraction_blocks_status_and_export_even_if_complete_claimed():
+    from specguard.schemas import Extraction
+    from specguard.reporting import full_report
+    from specguard.ai_client import demo_extract
+    facts = demo_extract(parse_document("buyer.txt", BASE_ORDER.encode())).facts
+    unverified = Extraction(source="buyer.txt", sha256="test", mode="live", facts=facts)
+    assert order_status([], [], complete=True, extractions=[unverified]) == "REVIEW"
+    report = full_report([unverified], [], [], [], True, 0, {"reviewer": "Test reviewer"})
+    assert report["status"] == "REVIEW"
+    assert report["extractions"][0]["verification"] == "review_required"
+
+
+def test_blank_labeled_value_cannot_be_silently_ignored():
+    with pytest.raises(ExtractionError):
+        ModelClient(Config()).extract(parse_document("buyer.txt", (BASE_ORDER + "\nDeadline:").encode()))

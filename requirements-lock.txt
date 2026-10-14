@@ -29,12 +29,13 @@ pydantic==2.14.1
 pydantic_core==2.50.1
 pydeck==0.9.3
 Pygments==2.21.0
-pymupdf==1.28.2
+pypdf==6.20.1
 pytest==9.1.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.4
 python-multipart==0.0.32
 referencing==0.37.0
+reportlab==5.0.1
 requests==2.34.2
 rpds-py==2026.9.1
 six==1.17.0

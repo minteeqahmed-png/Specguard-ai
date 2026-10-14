@@ -1,6 +1,17 @@
-# AMD MI300X inference setup — execution pending
+# AMD inference setup
 
-Documentation checked October 12, 2026. These are setup instructions, not evidence of a completed deployment. No AMD instance or real inference was available during local testing. The precise cloud image, driver, container digest and model revision must be recorded when tested together.
+## Current route: Token Factory
+
+Synthetic smoke tests used the AMD Token Factory endpoint `https://developer.amd.com.cn/radeon/api/v1` with `MiMo-V2.6-Flash`. Store the team key only in a local `.env`: `SPECGUARD_MODE=live`, `VLLM_BASE_URL` as above, `VLLM_MODEL=MiMo-V2.6-Flash`, `VLLM_API_KEY` set privately, and `REQUEST_TIMEOUT=180`. Confirm model availability with **Check model connection** before recording. Do not show the key in video, screenshots or exports.
+
+The [AMD ACT III main challenge](https://lablab.ai/ai-hackathons/amd-developer-hackathon-act-iii) permits Token Factory. This route does not require provisioning an MI300X VM or collecting telemetry from a machine the team does not control. Show the provider, configured model, live banner, genuine request timings and the resulting analysis. Do not claim independent GPU identity verification.
+
+The supplied trial API documentation limits this endpoint to development/trial use without a production SLA. Team quotas are shared. HTTP 429 blocks completion and displays a quota message; check provider usage/reset time before retrying. A reliability run stopped at HTTP 429 after 11 cases; broader live validation remains unfinished. The app sends at most two requests per document for invalid extraction responses, and does not automatically retry HTTP failures.
+
+## Optional self-hosted MI300X route — untested
+
+
+Documentation checked October 12, 2026. These are setup instructions, not evidence of a completed deployment. These optional self-hosting instructions have not been executed; the Token Factory route above has had real inference smoke tests. The precise cloud image, driver, container digest and model revision must be recorded when tested together.
 
 ## Account and instance
 
@@ -77,7 +88,7 @@ Run locally:
 
 Retain model/container revisions, timestamps, hardware output, redacted server logs and the exported analysis showing live facts consumed by reconciliation. `processing_seconds` is pipeline wall time. `inference_request_seconds` measures client HTTP round trips including network, queueing and generation; it is not pure GPU kernel time or tokens/second. Demo values have no GPU interpretation. Review outputs for secrets before publishing evidence.
 
-AMD integration is complete only after real GPU serving, actual structured output received by Streamlit, consumption by reconciliation, and verifiable execution evidence. It is currently incomplete.
+This optional self-hosted route remains unverified. Token Factory use is a separate supported main-challenge route; its API results do not establish self-hosted GPU telemetry or production reliability.
 
 ## Stop unused resources
 

@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-import pymupdf
+from reportlab.pdfgen.canvas import Canvas
 
 ROOT = Path(__file__).resolve().parents[1] / "sample_data" / "cases"
 PRODUCTS = ["Football jersey", "Basketball uniform", "Sports trousers", "Custom hoodie", "Embroidered shirt", "Team tracksuit"]
@@ -51,10 +51,13 @@ def generate():
             if group == "consistent" and index == 0:
                 tech.update(unit="PCS", printing="DYE SUBLIMATION", color="NAVY   BLUE")
             (folder / "buyer_message.txt").write_text(text_for(buyer), encoding="utf-8")
-            with pymupdf.open() as pdf:
-                page = pdf.new_page()
-                page.insert_text((72, 72), text_for(tech), fontsize=12)
-                pdf.save(folder / "tech_pack.pdf")
+            pdf = Canvas(str(folder / "tech_pack.pdf"), invariant=True)
+            text = pdf.beginText(72, 770)
+            text.setFont("Helvetica", 12)
+            text.textLines(text_for(tech))
+            pdf.drawText(text)
+            pdf.showPage()
+            pdf.save()
             (folder / "quantities.csv").write_text("size,quantity\nS,100\nM,150\nL,150\nXL,100\n", encoding="utf-8")
             sizes = {"S": 100, "M": 150, "L": 150, "XL": 100}
             csv_quote = "\n".join(f"size: {size}; quantity: {count}" for size, count in sizes.items())

@@ -8,6 +8,7 @@ from pydantic import ValidationError
 
 from specguard.config import Config
 from specguard.parser import Document
+from specguard.reconciliation import normalize
 from specguard.schemas import Extraction, ExtractionPayload, Fact
 
 
@@ -54,8 +55,8 @@ def validate_evidence(payload: ExtractionPayload, document: Document) -> None:
 LABELS = {"product": "product", "category": "category", "quantity": "quantity", "unit": "unit", "color": "color", "secondary colors": "secondary_colors", "material": "material", "printing": "printing", "embroidery": "embroidery", "deadline": "deadline", "instructions": "instructions"}
 
 
-def demo_extract(document: Document) -> Extraction:
-    """Deterministic template parser, deliberately not general language inference."""
+def template_facts(document: Document) -> list[Fact]:
+    """Parse only the documented templates, consuming every nonblank source line."""
     facts = []
     if document.kind == "csv":
         if not document.rows or set(document.rows[0]) != {"size", "quantity"}:
@@ -74,6 +75,8 @@ def demo_extract(document: Document) -> Extraction:
                 field = LABELS.get(label.strip().lower())
                 if line.strip() and not field and line.strip() != "SYNTHETIC TECHNICAL SPECIFICATION":
                     raise ExtractionError("Demo text must use the supported labeled template. Unrecognized content requires Live Mode or manual review.")
+                if field and (not separator or not value.strip()):
+                    raise ExtractionError("A labeled field has no value. Complete it before analysis.")
                 if separator and field and value.strip():
                     value = value.strip()
                     if field == "quantity":
@@ -83,9 +86,37 @@ def demo_extract(document: Document) -> Extraction:
                     facts.append(Fact(field=field, value=value, quote=line, location=segment.location))
         if not facts:
             raise ExtractionError("Demo extraction supports labeled sample templates only (for example Quantity: 500). Use Live Mode for free-form text.")
+    return facts
+
+
+def verify_template(payload: ExtractionPayload, document: Document) -> bool:
+    """Independently check coverage and values; never replace live model output."""
+    try:
+        expected = template_facts(document)
+    except (ExtractionError, ValidationError):
+        # A model cannot certify its own completeness for unrestricted prose.
+        return False
+    remaining = list(payload.facts)
+    for source_fact in expected:
+        match = next((fact for fact in remaining if
+            fact.field == source_fact.field
+            and normalize(fact.field, fact.value) == normalize(source_fact.field, source_fact.value)
+            and fact.location in {source_fact.location, "document"}
+            and whitespace(source_fact.quote) in whitespace(fact.quote)), None)
+        if match is None:
+            raise ExtractionError(f"Source verification failed for {source_fact.field}: preserve every labeled value and complete size-table row with its supporting quote.")
+        remaining.remove(match)
+    if remaining:
+        raise ExtractionError("Source verification found extra or duplicate facts not supported by the document template.")
+    return True
+
+
+def demo_extract(document: Document) -> Extraction:
+    """Deterministic template extraction, deliberately not language inference."""
+    facts = template_facts(document)
     payload = ExtractionPayload(facts=facts)
     validate_evidence(payload, document)
-    return Extraction(source=document.name, sha256=document.sha256, mode="demo", facts=tuple(payload.facts))
+    return Extraction(source=document.name, sha256=document.sha256, mode="demo", facts=tuple(payload.facts), verification="template_verified")
 
 
 class ModelClient:
@@ -102,6 +133,8 @@ class ModelClient:
         except httpx.TimeoutException as exc:
             raise ExtractionError("Model request timed out. Verify the tunnel and retry.") from exc
         except httpx.HTTPStatusError as exc:
+            if exc.response.status_code == 429:
+                raise ExtractionError("Model quota or rate limit reached (HTTP 429). Analysis is incomplete. Check provider usage/reset time and retry later; no automatic retries were sent.") from exc
             raise ExtractionError(f"Model endpoint returned HTTP {exc.response.status_code}. Check authentication, model availability and server configuration.") from exc
         except httpx.RequestError as exc:
             raise ExtractionError("Model endpoint unavailable. Check the server and SSH tunnel.") from exc
@@ -159,10 +192,11 @@ class ModelClient:
                 if not payload.facts:
                     raise ExtractionError("No supported facts were extracted. Extract all explicitly supported manufacturing facts; do not invent facts if none are present.")
                 validate_evidence(payload, document)
+                verified = verify_template(payload, document)
             except (ValidationError, ExtractionError) as exc:
                 detail = validation_hint(exc) if isinstance(exc, ValidationError) else str(exc)
                 if attempt == 1:
                     raise ExtractionError(f"Model output failed JSON/schema or evidence validation after 2 attempts ({detail}). No order approval can be produced from this response.") from exc
                 feedback = " A previous extraction failed validation: " + detail + ". Extract the complete document again following every rule above. Do not discard supported facts to avoid validation errors. Copy supplied locations exactly, or use document for a quote spanning multiple segments; never invent location ranges."
                 continue
-            return Extraction(source=document.name, sha256=document.sha256, mode="live", facts=tuple(payload.facts), inference_seconds=perf_counter() - started, model=self.config.model)
+            return Extraction(source=document.name, sha256=document.sha256, mode="live", facts=tuple(payload.facts), inference_seconds=perf_counter() - started, model=self.config.model, verification="template_verified" if verified else "review_required")

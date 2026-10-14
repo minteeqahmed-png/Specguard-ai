@@ -1,17 +1,41 @@
 from pathlib import Path
 
-import pymupdf
+import io
+from pypdf import PdfReader, PdfWriter
+from reportlab.pdfgen.canvas import Canvas
 import pytest
 
 from specguard.parser import MAX_BYTES, DocumentError, parse_document
 
 
 def pdf_bytes(text="Product: Football jersey"):
-    with pymupdf.open() as pdf:
-        page = pdf.new_page()
-        if text:
-            page.insert_text((72, 72), text)
-        return pdf.tobytes()
+    stream = io.BytesIO()
+    pdf = Canvas(stream)
+    if text:
+        pdf.drawString(72, 750, text)
+    pdf.showPage()
+    pdf.save()
+    return stream.getvalue()
+
+
+def test_encrypted_pdf_is_rejected():
+    writer = PdfWriter()
+    writer.append(PdfReader(io.BytesIO(pdf_bytes())))
+    writer.encrypt("secret")
+    stream = io.BytesIO()
+    writer.write(stream)
+    with pytest.raises(DocumentError, match="Password-protected"):
+        parse_document("locked.pdf", stream.getvalue())
+
+
+def test_pdf_page_limit():
+    writer = PdfWriter()
+    for _ in range(51):
+        writer.add_blank_page(width=100, height=100)
+    stream = io.BytesIO()
+    writer.write(stream)
+    with pytest.raises(DocumentError, match="50-page"):
+        parse_document("long.pdf", stream.getvalue())
 
 
 def test_txt():

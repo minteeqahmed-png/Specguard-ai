@@ -1,5 +1,6 @@
 streamlit==1.65.0
-PyMuPDF==1.28.2
+pypdf==6.20.1
+reportlab==5.0.1
 pydantic==2.14.1
 httpx==0.28.1
 python-dotenv==1.2.4

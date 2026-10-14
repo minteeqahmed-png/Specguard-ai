@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T10:51:15.145407+00:00",
+  "generated_at": "2026-10-14T10:45:56.315237+00:00",
   "mode": "demo",
   "python": "3.12.4",
   "platform": "Windows",
@@ -17,7 +17,7 @@
   "successfully_processed_documents": 81,
   "expected_documents": 81,
   "status_correct": 27,
-  "processing_seconds": 0.977266999980202,
+  "processing_seconds": 0.5481558999890694,
   "inference_request_seconds": null,
   "amd_hardware_verified": false,
   "cases": [
@@ -27,7 +27,7 @@
       "actual": [],
       "status": "READY",
       "errors": [],
-      "processing_seconds": 0.05642799998167902
+      "processing_seconds": 0.022298800002317876
     },
     {
       "case": "02_consistent",
@@ -35,7 +35,7 @@
       "actual": [],
       "status": "READY",
       "errors": [],
-      "processing_seconds": 0.019498700014082715
+      "processing_seconds": 0.00997710000956431
     },
     {
       "case": "03_consistent",
@@ -43,7 +43,7 @@
       "actual": [],
       "status": "READY",
       "errors": [],
-      "processing_seconds": 0.019596400001319125
+      "processing_seconds": 0.009922500001266599
     },
     {
       "case": "04_consistent",
@@ -51,7 +51,7 @@
       "actual": [],
       "status": "READY",
       "errors": [],
-      "processing_seconds": 0.01781160000246018
+      "processing_seconds": 0.009243000007700175
     },
     {
       "case": "05_consistent",
@@ -59,7 +59,7 @@
       "actual": [],
       "status": "READY",
       "errors": [],
-      "processing_seconds": 0.022807100001955405
+      "processing_seconds": 0.009320500001194887
     },
     {
       "case": "06_consistent",
@@ -67,7 +67,7 @@
       "actual": [],
       "status": "READY",
       "errors": [],
-      "processing_seconds": 0.02066979999653995
+      "processing_seconds": 0.00897629999963101
     },
     {
       "case": "07_quantity",
@@ -81,7 +81,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.021700000012060627
+      "processing_seconds": 0.00888219999615103
     },
     {
       "case": "08_quantity",
@@ -95,7 +95,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.020128100004512817
+      "processing_seconds": 0.00972889999684412
     },
     {
       "case": "09_quantity",
@@ -109,7 +109,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.025636699981987476
+      "processing_seconds": 0.00896229999489151
     },
     {
       "case": "10_quantity",
@@ -123,7 +123,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.020580300013534725
+      "processing_seconds": 0.008557299996027723
     },
     {
       "case": "11_quantity",
@@ -137,7 +137,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.019833099999232218
+      "processing_seconds": 0.008630100011941977
     },
     {
       "case": "12_color",
@@ -149,7 +149,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.019585800007916987
+      "processing_seconds": 0.009224800000083633
     },
     {
       "case": "13_color",
@@ -161,7 +161,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.01721930000348948
+      "processing_seconds": 0.013898399993195198
     },
     {
       "case": "14_color",
@@ -173,7 +173,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.021242100017843768
+      "processing_seconds": 0.008712299997569062
     },
     {
       "case": "15_color",
@@ -185,7 +185,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.021286600007442757
+      "processing_seconds": 0.009561900005792268
     },
     {
       "case": "16_material",
@@ -197,7 +197,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.017209799989359453
+      "processing_seconds": 0.009656900001573376
     },
     {
       "case": "17_material",
@@ -209,7 +209,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.019536799984052777
+      "processing_seconds": 0.009222000007866882
     },
     {
       "case": "18_material",
@@ -221,7 +221,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.024694699997780845
+      "processing_seconds": 0.009803299995837733
     },
     {
       "case": "19_printing",
@@ -233,7 +233,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.020433900004718453
+      "processing_seconds": 0.008936399986851029
     },
     {
       "case": "20_printing",
@@ -245,7 +245,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.0176979000098072
+      "processing_seconds": 0.00955719999910798
     },
     {
       "case": "21_printing",
@@ -257,7 +257,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.019679499993799254
+      "processing_seconds": 0.008631300006527454
     },
     {
       "case": "22_missing",
@@ -269,7 +269,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.019152299995766953
+      "processing_seconds": 0.00814070001069922
     },
     {
       "case": "23_missing",
@@ -281,7 +281,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.01605790000758134
+      "processing_seconds": 0.009883099992293864
     },
     {
       "case": "24_missing",
@@ -293,7 +293,7 @@
       ],
       "status": "REVIEW",
       "errors": [],
-      "processing_seconds": 0.015423200005898252
+      "processing_seconds": 0.008633899997221306
     },
     {
       "case": "25_multi",
@@ -311,7 +311,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.015955899987602606
+      "processing_seconds": 0.008563300012610853
     },
     {
       "case": "26_multi",
@@ -329,7 +329,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.02015450000180863
+      "processing_seconds": 0.011239200001000427
     },
     {
       "case": "27_multi",
@@ -347,7 +347,7 @@
       ],
       "status": "HOLD",
       "errors": [],
-      "processing_seconds": 0.026204200024949387
+      "processing_seconds": 0.008922100008931011
     }
   ]
 }

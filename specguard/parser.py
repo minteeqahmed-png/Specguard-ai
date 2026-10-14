@@ -5,7 +5,7 @@ import io
 from dataclasses import dataclass, field
 from pathlib import Path
 
-import pymupdf
+from pypdf import PdfReader
 
 MAX_BYTES = 10 * 1024 * 1024
 MAX_CHARS = 100_000
@@ -47,13 +47,14 @@ def parse_document(name: str, data: bytes) -> Document:
     doc = Document(name, kind, hashlib.sha256(data).hexdigest(), [])
     if kind == "pdf":
         try:
-            with pymupdf.open(stream=data, filetype="pdf") as pdf:
-                if pdf.needs_pass:
+            with io.BytesIO(data) as stream:
+                pdf = PdfReader(stream, strict=True)
+                if pdf.is_encrypted:
                     raise DocumentError("Password-protected PDFs are not supported.")
-                if len(pdf) > MAX_PAGES:
+                if len(pdf.pages) > MAX_PAGES:
                     raise DocumentError("PDF exceeds the 50-page limit.")
-                for index, page in enumerate(pdf):
-                    text = page.get_text(sort=True).strip()
+                for index, page in enumerate(pdf.pages):
+                    text = (page.extract_text() or "").strip()
                     doc.segments.append(Segment(f"page {index + 1}", text))
                     if not text:
                         doc.warnings.append(f"Page {index + 1} has no extractable text; scanned content requires OCR, which is not supported.")

@@ -81,6 +81,7 @@ def order_status(issues: list[Issue], resolutions: list[Resolution], *, complete
         unresolved += correction_checks(extractions, issues, resolutions)
     if any(issue.severity == "CRITICAL" for issue in unresolved):
         return "HOLD"
-    if not complete or any(issue.severity == "MAJOR" for issue in unresolved):
+    unverified = extractions is not None and any(e.mode == "live" and e.verification != "template_verified" for e in extractions)
+    if not complete or unverified or any(issue.severity == "MAJOR" for issue in unresolved):
         return "REVIEW"
     return "READY"

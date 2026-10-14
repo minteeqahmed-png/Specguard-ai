@@ -19,6 +19,8 @@ def analyze(inputs, client, progress=None):
                 errors.append({"source": name, "message": warning})
             extraction = client.extract(document)
             extractions.append(extraction)
+            if extraction.verification != "template_verified":
+                errors.append({"source": name, "message": "Extracted facts require source review: values and completeness could not be independently verified. READY is blocked. Supply a supported labeled template or size,quantity CSV after checking the original document."})
         except (DocumentError, ExtractionError) as exc:
             errors.append({"source": name, "message": str(exc)})
         if progress:
