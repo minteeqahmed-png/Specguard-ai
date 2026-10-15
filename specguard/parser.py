@@ -85,14 +85,19 @@ def parse_document(name: str, data: bytes) -> Document:
             headers = [h.strip() for h in table[0]]
             if any(not h for h in headers) or len(set(h.casefold() for h in headers)) != len(headers):
                 raise DocumentError("CSV headers must be nonempty and unique.")
+            expanded_chars = 0
             for row_index, row in enumerate(table[1:], 2):
                 if not row or not any(v.strip() for v in row):
                     continue
                 if len(row) != len(headers):
                     raise DocumentError(f"CSV record {row_index} has a different column count than its header.")
                 values = [v.strip() for v in row]
+                segment_text = "; ".join(f"{h}: {v}" for h, v in zip(headers, values))
+                expanded_chars += len(segment_text) + (1 if doc.segments else 0)
+                if expanded_chars > MAX_CHARS:
+                    raise DocumentError("Extracted content exceeds the 100,000-character limit.")
                 doc.rows.append(dict(zip(headers, values)))
-                doc.segments.append(Segment(f"record {row_index}", "; ".join(f"{h}: {v}" for h, v in zip(headers, values))))
+                doc.segments.append(Segment(f"record {row_index}", segment_text))
                 if any(not v for v in values):
                     doc.warnings.append(f"CSV record {row_index} contains missing values.")
     if not doc.text.strip():

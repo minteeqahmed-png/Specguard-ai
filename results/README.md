@@ -10,6 +10,8 @@ Field accuracy compares normalized field/value pairs per document. Its denominat
 
 This 27-case set deliberately shares the demo extractor's template format. Its perfect result is a regression result, not evidence of unseen-document accuracy, manufacturing savings or AMD performance. Live mode reports cannot independently prove GPU identity: correlate them with redacted server logs, container/model revisions and hardware telemetry.
 
+Live evaluation stops after HTTP 401, 403 or 429 and still saves a partial report. `case_count` counts the cases checked, `dataset_case_count` counts all dataset cases, `not_run_cases` identifies those skipped, and `stopped_http_status` records the provider failure. `expected_documents` covers the whole dataset; field/conflict metrics cover only checked cases and must not be presented as full-dataset results when `not_run_cases` is nonempty.
+
 
 ## Hosted verification records
 

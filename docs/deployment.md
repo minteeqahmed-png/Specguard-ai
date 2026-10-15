@@ -8,7 +8,7 @@ Use [Streamlit Community Cloud](https://share.streamlit.io/) for the public demo
 
 1. Sign in with GitHub and choose **Create app**, then **Yup, I have an app** (or the equivalent existing GitHub app option).
 2. Select repository `minteeqahmed-png/Specguard-ai`.
-3. For a new deployment, select branch `main`. The existing hosted app follows `codex/specguard-mvp`; keep that branch attached unless the owner changes the deployment settings.
+3. Select branch `main`, which contains the application and examples.
 4. Set the main file path to `app.py`.
 5. In **Advanced settings**, choose **Python 3.12** and leave **Secrets empty**. The app defaults to Demo Mode without credentials.
 6. Optionally choose an available subdomain, then click **Deploy**. Wait for dependency installation and app startup. Streamlit supplies the actual `*.streamlit.app` URL; do not assume a particular name is available.
@@ -17,6 +17,12 @@ Use [Streamlit Community Cloud](https://share.streamlit.io/) for the public demo
 The repository includes `requirements.txt` and the theme. The shared config deliberately does not force a server address; Community Cloud controls network routing. `.env` and `.streamlit/secrets.toml` are excluded from Git and Docker build contexts. No AMD key is needed for the initial Demo Mode deployment. Demo Mode uses deterministic labeled templates. The existing hosted app now has a key configured privately in host secrets and performs live AMD inference. Use synthetic documents for public demonstrations.
 
 [Official deployment instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy) describe repository selection, Python version and the Secrets form. Hosting changes pushed to the selected branch trigger updates. Free hosting has resource limits and is not a production availability guarantee.
+
+## Migrating the existing app to main
+
+The original hosted app follows `codex/specguard-mvp`. Keep that branch until the owner has migrated the deployment to `main`. Streamlit identifies deployments by repository, branch and entrypoint; changing the branch requires deleting and redeploying the app according to its [official migration instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/rename-your-app).
+
+Before deleting the old app, privately save its Secrets and note its subdomain and sharing settings. Redeploy this repository using branch `main`, entrypoint `app.py` and Python 3.12, restore the private settings, and verify the app at its intended URL. Only then delete the old Git branch. Never paste the private Secrets into an issue, commit or pull request.
 
 ## Live hosted access
 
@@ -37,7 +43,7 @@ The hosted app was accessible without sign-in during the verification. For inter
 ```powershell
 git clone https://github.com/minteeqahmed-png/Specguard-ai.git
 cd Specguard-ai
-git switch codex/specguard-mvp
+git switch main
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements.txt
 .\.venv\Scripts\python -m streamlit run app.py --server.address=127.0.0.1

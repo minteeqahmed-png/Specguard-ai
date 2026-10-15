@@ -216,3 +216,45 @@ def test_unverified_live_extraction_blocks_status_and_export_even_if_complete_cl
 def test_blank_labeled_value_cannot_be_silently_ignored():
     with pytest.raises(ExtractionError):
         ModelClient(Config()).extract(parse_document("buyer.txt", (BASE_ORDER + "\nDeadline:").encode()))
+
+
+@pytest.mark.parametrize("name,prefix", [("buyer.txt", "Quantity: "), ("sizes.csv", "size,quantity\nS,")])
+def test_oversized_counts_return_document_errors(name, prefix):
+    result = analyze([(name, (prefix + "9" * 4301).encode())], ModelClient(Config()))
+    assert not result["complete"] and not result["extractions"]
+    assert result["errors"][0]["source"] == name
+    assert order_status(result["issues"], [], complete=result["complete"]) == "REVIEW"
+
+
+def test_oversized_count_cannot_crash_live_source_verification():
+    text = "Quantity: " + "9" * 4301
+    payload = {"facts": [{"field": "quantity", "value": 1, "quote": text, "location": "line 1"}]}
+    result = analyze([("buyer.txt", text.encode())], client(lambda request: response(payload)))
+    assert not result["complete"] and result["errors"]
+    assert order_status(result["issues"], [], complete=result["complete"], extractions=result["extractions"]) == "REVIEW"
+
+
+@pytest.mark.parametrize("status", [401, 403, 429])
+def test_provider_failure_stops_batch_and_keeps_partial_results(status):
+    calls, progress = [], []
+    def handler(request):
+        calls.append(request)
+        return response() if len(calls) == 1 else httpx.Response(status)
+    result = analyze([(name, b"Quantity: 500") for name in ("first.txt", "failed.txt", "skipped.txt")], client(handler), progress.append)
+    assert len(calls) == 2
+    assert [e.source for e in result["extractions"]] == ["first.txt"]
+    assert result["stopped_http_status"] == status and not result["complete"]
+    assert [e["source"] for e in result["errors"]] == ["failed.txt", "skipped.txt"]
+    assert "Not processed" in result["errors"][1]["message"]
+    assert progress[-1] == 1
+
+
+def test_document_validation_failure_does_not_stop_other_extractions():
+    calls = []
+    def handler(request):
+        calls.append(request)
+        return response({"facts": []}) if len(calls) < 3 else response()
+    result = analyze([("invalid.txt", b"Quantity: 500"), ("valid.txt", b"Quantity: 500")], client(handler))
+    assert len(calls) == 3
+    assert [e.source for e in result["extractions"]] == ["valid.txt"]
+    assert result["stopped_http_status"] is None and not result["complete"]

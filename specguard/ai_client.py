@@ -13,7 +13,9 @@ from specguard.schemas import Extraction, ExtractionPayload, Fact
 
 
 class ExtractionError(ValueError):
-    pass
+    def __init__(self, message, *, status_code=None):
+        super().__init__(message)
+        self.status_code = status_code
 
 
 def whitespace(text: str) -> str:
@@ -55,6 +57,16 @@ def validate_evidence(payload: ExtractionPayload, document: Document) -> None:
 LABELS = {"product": "product", "category": "category", "quantity": "quantity", "unit": "unit", "color": "color", "secondary colors": "secondary_colors", "material": "material", "printing": "printing", "embroidery": "embroidery", "deadline": "deadline", "instructions": "instructions"}
 
 
+def template_count(value: str) -> int:
+    try:
+        count = int(value)
+    except ValueError as exc:
+        raise ExtractionError("Quantity is outside the supported integer range.") from exc
+    if not 0 <= count <= 100_000_000:
+        raise ExtractionError("Quantities must be between 0 and 100,000,000; order totals must be positive.")
+    return count
+
+
 def template_facts(document: Document) -> list[Fact]:
     """Parse only the documented templates, consuming every nonblank source line."""
     facts = []
@@ -66,7 +78,7 @@ def template_facts(document: Document) -> list[Fact]:
             size = row["size"].strip().upper()
             if not size or size in sizes or not re.fullmatch(r"\d+", row["quantity"]):
                 raise ExtractionError("Size table contains missing, duplicate or invalid quantities/size labels.")
-            sizes[size] = int(row["quantity"])
+            sizes[size] = template_count(row["quantity"])
         facts.append(Fact(field="size_quantities", value=sizes, quote=document.text, location="document"))
     else:
         for segment in document.segments:
@@ -82,7 +94,7 @@ def template_facts(document: Document) -> list[Fact]:
                     if field == "quantity":
                         if not re.fullmatch(r"\d+", value):
                             raise ExtractionError("Demo quantities must be whole numbers.")
-                        value = int(value)
+                        value = template_count(value)
                     facts.append(Fact(field=field, value=value, quote=line, location=segment.location))
         if not facts:
             raise ExtractionError("Demo extraction supports labeled sample templates only (for example Quantity: 500). Use Live Mode for free-form text.")
@@ -134,8 +146,8 @@ class ModelClient:
             raise ExtractionError("Model request timed out. Verify the tunnel and retry.") from exc
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code == 429:
-                raise ExtractionError("Model quota or rate limit reached (HTTP 429). Analysis is incomplete. Check provider usage/reset time and retry later; no automatic retries were sent.") from exc
-            raise ExtractionError(f"Model endpoint returned HTTP {exc.response.status_code}. Check authentication, model availability and server configuration.") from exc
+                raise ExtractionError("Model quota or rate limit reached (HTTP 429). Analysis is incomplete. Check provider usage/reset time and retry later; no automatic retries were sent.", status_code=429) from exc
+            raise ExtractionError(f"Model endpoint returned HTTP {exc.response.status_code}. Check authentication, model availability and server configuration.", status_code=exc.response.status_code) from exc
         except httpx.RequestError as exc:
             raise ExtractionError("Model endpoint unavailable. Check the server and SSH tunnel.") from exc
         except ValueError as exc:

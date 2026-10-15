@@ -1,7 +1,12 @@
 """Static presentation helpers. Uploaded content never enters these HTML templates."""
 from pathlib import Path
+from string import punctuation
 
 import streamlit as st
+
+
+def markdown_literal(text):
+    return text.translate(str.maketrans({char: "\\" + char for char in punctuation}))
 
 
 def render_header():

@@ -23,6 +23,8 @@ Demo Mode is an explicit template parser. Live Mode sends extracted document tex
 
 `pipeline.py` keeps per-document failures and partial results. Any failed document or parser warning blocks READY. A blank PDF page is treated conservatively because unread text could contain requirements.
 
+HTTP 401, 403 and 429 stop further live requests in the order and evaluation batch. Completed extractions remain available; skipped documents receive explicit errors, and evaluation reports list the remaining cases as not run. Ordinary document/schema failures still allow other documents to be checked.
+
 Required order-level fields: product, stated quantity, unit, primary color, material and printing. A required field may appear in any document. A size sum alone does not replace an explicit total. Quantities, products, units, conflicting size tables and size-total mismatches are CRITICAL. Color, material, printing, deadline, embroidery and secondary-color mismatches are MAJOR. Missing mandatory information is MAJOR, distinct from contradiction. Category/instructions remain evidence for human inspection rather than automatic conflict rules. Optional omissions do not block READY.
 
 Matching ignores case and redundant whitespace. Explicit aliases: PCS/piece/pieces; dye sublimation/sublimation; screen-printing/screen printing. Colors have no synonym mapping: navy blue and royal blue remain different. Unit conversion and fuzzy material equivalence are deliberately absent.

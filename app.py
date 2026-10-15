@@ -11,7 +11,7 @@ from specguard.parser import DocumentError, parse_document
 from specguard.pipeline import analyze
 from specguard.reconciliation import correction_checks, order_status, resolve_issue
 from specguard.reporting import clarification_text, conflict_csv, full_report, json_report
-from specguard.ui import render_header, render_sidebar
+from specguard.ui import markdown_literal, render_header, render_sidebar
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="SpecGuard AI", page_icon="🛡️", layout="wide", initial_sidebar_state="expanded")
@@ -64,7 +64,7 @@ if st.session_state.get("fingerprint") != fingerprint:
     st.session_state.resolutions = []
 
 for name, data in inputs:
-    with st.expander(name):
+    with st.expander(markdown_literal(name)):
         try:
             doc = parse_document(name, data)
             st.caption(f"{doc.kind.upper()} · {len(data):,} bytes · {len(doc.segments)} source segments")
@@ -90,9 +90,9 @@ if st.button("Extract facts", type="primary", disabled=not inputs):
 result = st.session_state.get("analysis")
 if result:
     for error in result["errors"]:
-        st.error(f"{error['source']}: {error['message']}")
+        st.error(markdown_literal(f"{error['source']}: {error['message']}"))
     for extraction in result["extractions"]:
-        with st.expander(f"{extraction.source} · {len(extraction.facts)} extracted facts", expanded=True):
+        with st.expander(markdown_literal(f"{extraction.source} · {len(extraction.facts)} extracted facts"), expanded=True):
             st.caption("Source template verified" if extraction.verification == "template_verified" else "Source review required · completeness unverified")
             st.dataframe([{"Field": f.field, "Value": json.dumps(f.value) if isinstance(f.value, dict) else str(f.value), "Evidence": f.quote, "Location": f.location} for f in extraction.facts], width="stretch", hide_index=True)
     st.caption(f"Processed {len(result['extractions'])}/{len(inputs)} documents in {result['elapsed']:.2f} seconds. Timing includes local processing and any network requests.")
@@ -128,21 +128,21 @@ if resolutions:
     if checks:
         st.warning("The order still needs attention after applying the recorded corrections. Update the relevant resolutions or source documents.")
         for finding in checks:
-            st.write(f"Correction check · {finding.title}: {finding.question}")
+            st.text(f"Correction check · {finding.title}: {finding.question}")
 for issue in issues:
     done = issue.id in resolved
     with st.container(border=True):
         st.subheader(f"{issue.title} · {issue.severity}")
         st.caption("Resolved by reviewer" if done else "Awaiting review")
         for observation in issue.evidence:
-            st.write(f"{observation.source} · {observation.fact.location}")
+            st.text(f"{observation.source} · {observation.fact.location}")
             st.code(str(observation.fact.value), language=None)
             st.text(observation.fact.quote)
-        st.write(issue.question)
+        st.text(issue.question)
         if done:
             latest = next(r for r in reversed(resolutions) if r.issue_id == issue.id)
-            st.write(f"Corrected value: {latest.corrected_value}")
-            st.write(f"{latest.reviewer}: {latest.note}")
+            st.text(f"Corrected value: {latest.corrected_value}")
+            st.text(f"{latest.reviewer}: {latest.note}")
             st.caption(latest.created_at.isoformat())
         with st.expander("Update resolution" if done else "Record resolution"):
             suffix = fingerprint + issue.id
@@ -171,7 +171,7 @@ with st.form("human_review_" + fingerprint):
         else:
             st.error("Provide a reviewer name, note and review confirmation.")
 if st.session_state.get("review"):
-    st.caption(f"Human review recorded by {st.session_state.review['reviewer']}.")
+    st.caption(markdown_literal(f"Human review recorded by {st.session_state.review['reviewer']}."))
 
 st.header("6 · Export Results")
 report = full_report(result["extractions"], issues, resolutions, result["errors"], result["complete"], result["elapsed"], st.session_state.get("review"))

@@ -71,3 +71,17 @@ def test_invalid_documents(name, data):
 def test_samples_parse():
     for path in Path("sample_data/initial").glob("*"):
         assert parse_document(path.name, path.read_bytes()).text
+
+
+def test_csv_expansion_cannot_bypass_character_limit():
+    data = (("x" * 1000) + "\n" + "v\n" * 101).encode()
+    with pytest.raises(DocumentError, match="100,000-character"):
+        parse_document("expanded.csv", data)
+
+
+def test_csv_character_limit_includes_record_separators(monkeypatch):
+    monkeypatch.setattr("specguard.parser.MAX_CHARS", 11)
+    assert len(parse_document("small.csv", b"xx\nv\nv\n").text) == 11
+    monkeypatch.setattr("specguard.parser.MAX_CHARS", 10)
+    with pytest.raises(DocumentError, match="character limit"):
+        parse_document("small.csv", b"xx\nv\nv\n")

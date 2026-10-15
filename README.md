@@ -49,6 +49,7 @@ Demo Mode is a separate deterministic template parser, available locally without
 ```powershell
 git clone https://github.com/minteeqahmed-png/Specguard-ai.git
 cd Specguard-ai
+git switch main
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements.txt
 .\.venv\Scripts\python -m streamlit run app.py --server.address=127.0.0.1
@@ -60,7 +61,7 @@ Open http://localhost:8501. On Linux/macOS use `.venv/bin/python`. Local runs de
 
 | Check | Observed result | Scope |
 | --- | --- | --- |
-| Automated tests | 86 passed | Parser, schema, failures, reconciliation, corrections, exports and Streamlit flows |
+| Automated tests | 99 passed | Parser, schema, failures, reconciliation, corrections, exports and Streamlit flows |
 | Synthetic regression evaluation | 27/27 statuses; 81/81 documents; 399/399 field values | Deterministic templates, not model accuracy |
 | Original fault probes | All nine blocked READY | Includes wrong value with a real quote and omitted conflicting quantity |
 | Hosted Demo Mode | Uploads, HOLD/READY, review history, reset, four exports and corrupt-file blocking passed | Synthetic browser checks |
@@ -95,6 +96,10 @@ The prototype handles one product/order at a time: at most 12 files / 30 MB tota
 Review state is session-only and reviewer names are self-entered. There is no built-in login or durable signed audit database. For internal-team use, restrict hosted viewers; public live requests consume shared AMD quota. The Token Factory trial supports development without a production SLA. Broad repeated/adversarial live evaluation, production deployment controls and customer pilot measurements remain future work. Docker packaging is provided but has not passed a local build/runtime check.
 
 Expected benefits and future subscription/per-order pricing remain hypotheses; customer savings and demand have not been measured.
+
+## Development workflow
+
+`main` is the stable default branch. Make changes on a short-lived branch such as `codex/fix-csv-validation`, open a pull request, and merge after the automated checks pass. Delete the feature branch after merging, once no deployment depends on it. A permanent `develop` branch is not needed for this project.
 
 ## License
 

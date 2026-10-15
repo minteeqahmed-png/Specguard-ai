@@ -23,9 +23,10 @@ def evaluate(mode="demo"):
     client = ModelClient(config)
     tp = fp = fn = field_correct = field_total = processed = status_correct = 0
     rows, inference = [], []
+    stopped_http_status = None
     started = perf_counter()
-    for truth_path in sorted((ROOT / "sample_data/cases").glob("*/ground_truth.json")):
-        truth = json.loads(truth_path.read_text(encoding="utf-8"))
+    cases = [(path, json.loads(path.read_text(encoding="utf-8"))) for path in sorted((ROOT / "sample_data/cases").glob("*/ground_truth.json"))]
+    for truth_path, truth in cases:
         inputs = [(name, (truth_path.parent / name).read_bytes()) for name in truth["documents"]]
         result = analyze(inputs, client)
         actual = {i.id for i in result["issues"]}
@@ -51,11 +52,14 @@ def evaluate(mode="demo"):
         status = order_status(result["issues"], [], complete=result["complete"])
         status_correct += status == truth["expected_status"]
         rows.append({"case": truth["case_id"], "expected": sorted(expected), "actual": sorted(actual), "status": status, "errors": result["errors"], "processing_seconds": result["elapsed"]})
+        if result["stopped_http_status"] is not None:
+            stopped_http_status = result["stopped_http_status"]
+            break
     if not rows:
         raise ValueError("Dataset missing. Run scripts/generate_dataset.py first.")
     precision = tp / (tp + fp) if tp + fp else 0
     recall = tp / (tp + fn) if tp + fn else 0
-    return {"generated_at": datetime.now(timezone.utc).isoformat(), "mode": mode, "python": platform.python_version(), "platform": platform.system(), "scope": "Synthetic template extraction and deterministic rule evaluation; not real-world accuracy or AMD performance." if mode == "demo" else "Synthetic live endpoint evaluation; AMD hardware must be independently evidenced.", "case_count": len(rows), "true_positive_count": tp, "false_positive_count": fp, "false_negative_count": fn, "conflict_precision": precision, "conflict_recall": recall, "f1": 2 * precision * recall / (precision + recall) if precision + recall else 0, "field_extraction_accuracy": field_correct / field_total if field_total else 0, "field_correct": field_correct, "field_total": field_total, "successfully_processed_documents": processed, "expected_documents": len(rows) * 3, "status_correct": status_correct, "processing_seconds": perf_counter() - started, "inference_request_seconds": inference if mode == "live" else None, "amd_hardware_verified": False, "cases": rows}
+    return {"generated_at": datetime.now(timezone.utc).isoformat(), "mode": mode, "python": platform.python_version(), "platform": platform.system(), "scope": "Synthetic template extraction and deterministic rule evaluation; not real-world accuracy or AMD performance." if mode == "demo" else "Synthetic live endpoint evaluation; AMD hardware must be independently evidenced.", "case_count": len(rows), "dataset_case_count": len(cases), "not_run_cases": [truth["case_id"] for _, truth in cases[len(rows):]], "stopped_http_status": stopped_http_status, "true_positive_count": tp, "false_positive_count": fp, "false_negative_count": fn, "conflict_precision": precision, "conflict_recall": recall, "f1": 2 * precision * recall / (precision + recall) if precision + recall else 0, "field_extraction_accuracy": field_correct / field_total if field_total else 0, "field_correct": field_correct, "field_total": field_total, "successfully_processed_documents": processed, "expected_documents": sum(len(truth["documents"]) for _, truth in cases), "status_correct": status_correct, "processing_seconds": perf_counter() - started, "inference_request_seconds": inference if mode == "live" else None, "amd_hardware_verified": False, "cases": rows}
 
 
 if __name__ == "__main__":
