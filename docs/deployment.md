@@ -2,7 +2,9 @@
 
 ## Free demo on Streamlit Community Cloud
 
-Use [Streamlit Community Cloud](https://share.streamlit.io/) for the public demonstration. Choose Community Cloud, not the separate Snowflake trial. Account sign-in and GitHub authorization are completed by the repository owner. These instructions prepare deployment; they do not mean a hosted app has already been created or tested.
+**[Open SpecGuard AI Demo](https://specguard-ai-dev.streamlit.app/)** — public Demo Mode deployment. The owner confirmed that it loads on October 15, 2026; the complete hosted workflow has not been independently verified.
+
+Use [Streamlit Community Cloud](https://share.streamlit.io/) for the public demonstration. Choose Community Cloud, not the separate Snowflake trial. Account sign-in and GitHub authorization are completed by the repository owner. The steps below describe how to reproduce the deployment.
 
 1. Sign in with GitHub and choose **Create app**, then **Yup, I have an app** (or the equivalent existing GitHub app option).
 2. Select repository `minteeqahmed-png/Specguard-ai`.

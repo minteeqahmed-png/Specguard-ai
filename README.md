@@ -2,6 +2,8 @@
 
 **Manufacturing Order Intelligence — evidence before production.**
 
+**[Open the hosted demo](https://specguard-ai-dev.streamlit.app/)** · Demo Mode with synthetic samples; live AMD inference is configured separately.
+
 SpecGuard AI compares customer messages, technical PDFs and size spreadsheets before manufacturing begins. It turns document requirements into validated facts, flags contradictions, shows their source evidence and records human decisions without rewriting the original facts.
 
 **Working local MVP with live AMD Token Factory API smoke testing.** Demo Mode is deterministic template extraction and never claims to run AMD inference. Live Mode has processed the synthetic sample order using AMD Token Factory's `MiMo-V2.6-Flash`. Independent GPU execution evidence and broader model evaluation remain outstanding.
@@ -38,7 +40,7 @@ Open http://localhost:8501. No account, API key, GPU or paid service is needed f
 
 ## Configuration and AMD
 
-For a free hosted demo, follow [Streamlit Community Cloud deployment](docs/deployment.md). Select branch `codex/specguard-mvp`, entrypoint `app.py`, Python 3.12, and leave Secrets empty for Demo Mode. The cloud deployment has not yet been verified. Local launches should explicitly pass `--server.address=127.0.0.1`; the shared config leaves the bind address to the hosting platform.
+For a free hosted demo, follow [Streamlit Community Cloud deployment](docs/deployment.md). Select branch `codex/specguard-mvp`, entrypoint `app.py`, Python 3.12, and leave Secrets empty for Demo Mode. The [hosted demo](https://specguard-ai-dev.streamlit.app/) is available; the owner confirmed it loads. A full hosted workflow check remains outstanding. Local launches should explicitly pass `--server.address=127.0.0.1`; the shared config leaves the bind address to the hosting platform.
 
 Copy `.env.example` to `.env` only when configuring the live endpoint. The app reads `SPECGUARD_MODE`, `VLLM_BASE_URL`, `VLLM_API_KEY`, `VLLM_MODEL` and `REQUEST_TIMEOUT`. Use `SPECGUARD_MODE=live` to enable real requests; the base URL must include `/v1`. The self-hosted example uses `Qwen/Qwen2.5-7B-Instruct`. For AMD Token Factory, use `https://developer.amd.com.cn/radeon/api/v1`, a privately stored team key, and an available model such as `MiMo-V2.6-Flash`; confirm current availability with **Check model connection**. A timeout of 180 seconds was used for the live smoke test. `DeepSeek-V4-Flash` produced intermittent invalid or omitted facts in these samples, so it is not the current demo choice. Never commit `.env` or API keys.
 
@@ -72,11 +74,11 @@ The application holds uploaded documents and review state in memory. It does not
 
 One product and one order per analysis. Maximum 12 documents / 30 MB total; 10 MB per file; 50 PDF pages; 100,000 extracted characters per file. Live extraction accepts at most 16,000 characters per document and fails rather than silently truncating. No OCR, XLSX, fuzzy color matching, unit conversion, multi-item reconciliation or persistent signed audit database. PDF table layout can be ambiguous. Matching a quote alone does not prove its interpretation or coverage. Live labeled templates and exact size,quantity CSVs must also match independently parsed source facts, including contradictory lines. Other layouts and free-form prose remain REVIEW even when valid facts are available. Check the originals and supply supported templates to proceed; recording a review cannot bypass this gate. See [reliability fixes](docs/reliability-fixes.md).
 
-Self-hosted AMD serving, independent GPU execution/utilization evidence and broad model accuracy/latency evaluation remain untested. Live Token Factory smoke tests on synthetic documents are not an accuracy benchmark. Docker packaging is supplied but has not been built here. Public hosting, a recorded video, final slides and the event submission are not completed.
+Self-hosted AMD serving, independent GPU execution/utilization evidence and broad model accuracy/latency evaluation remain untested. Live Token Factory smoke tests on synthetic documents are not an accuracy benchmark. Docker packaging is supplied but has not been built here. The public Demo Mode app is hosted on Streamlit Community Cloud. A recorded video, final slides and the event submission remain outstanding.
 
 ## Documentation
 
-- [Local deployment](docs/deployment.md)
+- [Cloud and local deployment](docs/deployment.md)
 - [AMD setup and evidence checklist](docs/amd_setup.md)
 - [Architecture](docs/architecture.md)
 - [Five-minute demo script](docs/demo_script.md)
