@@ -1,0 +1,53 @@
+{
+  "at": "2026-10-15T19:20:15.463571+00:00",
+  "url": "https://specguard-ai-dev.streamlit.app/",
+  "checks": [
+    "Hosted app shows Live Mode",
+    "Hosted AMD connection and model-list check passed",
+    "Synthetic order was processed and full analysis JSON downloaded",
+    "All three live extractions verified; HOLD with quantity, color and size-total conflicts"
+  ],
+  "passed": true,
+  "mode": "live",
+  "status": "HOLD",
+  "complete": true,
+  "errors": [],
+  "documents": 3,
+  "models": [
+    "MiMo-V2.6-Flash"
+  ],
+  "issue_ids": [
+    "conflict:quantity",
+    "conflict:color",
+    "size_total:0"
+  ],
+  "processing_seconds": 20.438646565191448,
+  "verification": [
+    {
+      "source": "buyer_order.txt",
+      "verification": "template_verified"
+    },
+    {
+      "source": "tech_pack.pdf",
+      "verification": "template_verified"
+    },
+    {
+      "source": "size_quantities.csv",
+      "verification": "template_verified"
+    }
+  ],
+  "scope": "One synthetic order through the hosted app and AMD Token Factory; not an accuracy or reliability benchmark.",
+  "amd_hardware_verified": false,
+  "expected_source_conflicts": {
+    "quantity": [
+      300,
+      280
+    ],
+    "color": [
+      "black",
+      "charcoal"
+    ],
+    "size_total": 300
+  },
+  "verified_on_client_date": "2026-10-16"
+}
