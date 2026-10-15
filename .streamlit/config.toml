@@ -13,7 +13,8 @@ textColor = "#E5EFFA"
 primaryColor = "#8EE0D3"
 
 [server]
-address = "127.0.0.1"
+# Let the hosting platform select the bind address. For local use, pass
+# --server.address=127.0.0.1 when launching Streamlit.
 maxUploadSize = 10
 
 [browser]

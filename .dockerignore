@@ -1,6 +1,7 @@
 .git
 .venv
 .env
+.streamlit/secrets.toml
 .env.*
 __pycache__
 .pytest_cache

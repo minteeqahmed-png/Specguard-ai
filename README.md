@@ -14,7 +14,7 @@ cd Specguard-ai
 git switch codex/specguard-mvp
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements.txt
-.\.venv\Scripts\python -m streamlit run app.py
+.\.venv\Scripts\python -m streamlit run app.py --server.address=127.0.0.1
 ```
 
 Open http://localhost:8501. No account, API key, GPU or paid service is needed for Demo Mode. After the review branch is merged, use main instead of switching branches. On Linux/macOS replace `.\.venv\Scripts\python` with `.venv/bin/python`.
@@ -37,6 +37,8 @@ Open http://localhost:8501. No account, API key, GPU or paid service is needed f
 - 27 synthetic evaluation cases, Pytest coverage and GitHub Actions configuration.
 
 ## Configuration and AMD
+
+For a free hosted demo, follow [Streamlit Community Cloud deployment](docs/deployment.md). Select branch `codex/specguard-mvp`, entrypoint `app.py`, Python 3.12, and leave Secrets empty for Demo Mode. The cloud deployment has not yet been verified. Local launches should explicitly pass `--server.address=127.0.0.1`; the shared config leaves the bind address to the hosting platform.
 
 Copy `.env.example` to `.env` only when configuring the live endpoint. The app reads `SPECGUARD_MODE`, `VLLM_BASE_URL`, `VLLM_API_KEY`, `VLLM_MODEL` and `REQUEST_TIMEOUT`. Use `SPECGUARD_MODE=live` to enable real requests; the base URL must include `/v1`. The self-hosted example uses `Qwen/Qwen2.5-7B-Instruct`. For AMD Token Factory, use `https://developer.amd.com.cn/radeon/api/v1`, a privately stored team key, and an available model such as `MiMo-V2.6-Flash`; confirm current availability with **Check model connection**. A timeout of 180 seconds was used for the live smoke test. `DeepSeek-V4-Flash` produced intermittent invalid or omitted facts in these samples, so it is not the current demo choice. Never commit `.env` or API keys.
 
