@@ -51,6 +51,16 @@ def render_sidebar(mode):
               <a href="#5-evidence-and-resolutions" target="_self"><span>04</span><div>Review<small>Resolve with evidence</small></div><b>↗</b></a>
               <a href="#6-export-results" target="_self"><span>05</span><div>Export<small>Keep your audit trail</small></div><b>↗</b></a>
             </nav>''')
+        st.download_button(
+            "Download example documents",
+            (Path(__file__).resolve().parents[1] / "examples" / "SpecGuard-Example-Documents.zip").read_bytes(),
+            file_name="SpecGuard-Example-Documents.zip",
+            mime="application/zip",
+            help="Three synthetic TXT, PDF and CSV files with upload instructions and expected findings.",
+            key="example_documents",
+            width="stretch",
+        )
+        st.caption("TXT + PDF + CSV · synthetic order with deliberate conflicts")
         st.html(f'''<div class="sg-mode"><span></span>{mode_label}</div>
         <div class="sg-review-note"><div class="sg-note-symbol">◎</div><strong>Human judgment comes first.</strong><p>One order. One product. Review the evidence before authorizing production.</p></div>
         <div class="sg-sidebar-foot">Your files stay in this session.<br>Export your reports before leaving.</div>''')

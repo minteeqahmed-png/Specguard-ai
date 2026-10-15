@@ -9,3 +9,12 @@ Conflict precision = matched conflict IDs / predicted conflict IDs; recall = mat
 Field accuracy compares normalized field/value pairs per document. Its denominator includes every expected fact plus unmatched predicted facts, so missing fields, wrong values and extras are penalized. Evidence-location validity is enforced before results are accepted; quote semantics still require human review. Successfully processed documents count validated extractions, including partial orders with other failed inputs. Parsing failures remain in the report. Timing includes local parsing, extraction and reconciliation, with HTTP request duration listed separately in Live Mode.
 
 This 27-case set deliberately shares the demo extractor's template format. Its perfect result is a regression result, not evidence of unseen-document accuracy, manufacturing savings or AMD performance. Live mode reports cannot independently prove GPU identity: correlate them with redacted server logs, container/model revisions and hardware telemetry.
+
+
+## Hosted verification records
+
+- `hosted_live_smoke.json`: one synthetic TXT/PDF/CSV order through the hosted app and AMD Token Factory, with model, verification status, expected conflicts and observed time. This is live inference evidence for the application, not independent GPU telemetry or a general benchmark.
+- `hosted_demo_workflows.json`: browser checks of the conflicting and consistent sample orders, JSON downloads and state reset in Demo Mode.
+- `hosted_upload_review.json`: synthetic uploads, all four exports, human corrections preserving original facts, and corrupt-PDF blocking in hosted Demo Mode.
+
+UTC timestamps are recorded in the JSON. All files are synthetic check summaries with no credentials or private customer documents.

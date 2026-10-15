@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-15T05:50:10.042672+00:00",
+  "url": "https://specguard-ai-dev.streamlit.app/",
+  "checks": [
+    "Hosted app loads in Demo Mode",
+    "Initial synthetic order: HOLD and all three expected conflicts; JSON export valid",
+    "Changing the order clears the previous analysis",
+    "Consistent synthetic order: READY, no conflicts/errors; JSON export valid"
+  ],
+  "passed": true,
+  "scope": "Public Demo Mode in fresh headless Chrome; synthetic samples only. Not live AMD or production certification."
+}

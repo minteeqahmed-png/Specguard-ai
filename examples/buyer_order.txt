@@ -1,0 +1,9 @@
+Product: Custom hoodie
+Category: Casualwear
+Quantity: 300
+Unit: pieces
+Color: black
+Material: cotton fleece
+Printing: screen printing
+Deadline: 2026-11-10
+Instructions: Synthetic upload test only.

@@ -1,10 +1,14 @@
-# SpecGuard AI — pitch outline
+# Pitch content and speaker notes
 
-1. **The costly handoff.** A buyer message, a technical PDF and a size spreadsheet describe the same order differently. The intended user is a small or medium manufacturer’s order coordinator.
-2. **Evidence before production.** Extract requirements, compare them, show the conflicting source statements, and ask a precise clarification question. Demonstrate the real working dashboard.
-3. **A clear division of responsibility.** AMD-hosted language inference extracts facts; Pydantic validates structure; deterministic rules compare requirements; people resolve conflicts and authorize production. Demo Mode must be labeled separately until live execution is verified.
-4. **Evaluation, honestly stated.** Use the latest real results file, naming its mode and date. The 27 synthetic cases are regression tests, not customer trials. Include actual GPU evidence only after successful AMD execution.
-5. **Business potential.** Expected benefits are less manual comparison, fewer avoidable errors and better traceability. Test these hypotheses with manufacturer interviews and measured pilot orders. A future per-order fee or monthly subscription may fit small manufacturers; pricing and savings are not yet validated.
-6. **Next milestone.** Complete AMD MI300X integration, measure end-to-end and inference-request latency, then evaluate diverse independently annotated orders. Defer payments, ERP integration and multi-item support until the core is validated.
+The completed [eight-slide PDF](../presentation/SpecGuard-AI-Pitch.pdf) and [cover](../presentation/cover.png) are included in the repository. Regenerate the PDF and vector cover with `python scripts/build_presentation.py`.
 
-Target Reinvent Commerce; manufacturing quality also relates to Intelligent Industry. The [official event page](https://lablab.ai/ai-hackathons/amd-developer-hackathon-act-iii) requires meaningful AMD work in the demonstrated product and lists prototype, descriptions, selected challenge, technology tags, cover image, demo video and pitch presentation. Check current organizer requirements before submitting. Project planning deadline supplied by the owner: October 18, 2026, 8:00 PM PKT; aim to finish October 17. This file is a slide-content outline, not a completed slide deck.
+1. **Clarity before production.** Introduce SpecGuard AI as a review assistant for manufacturing order coordinators. Show the working hosted URL.
+2. **One order, three sources.** The synthetic buyer asks for 300 black hoodies; the technical PDF says 280 charcoal hoodies; the size CSV totals 300. Explain the three intended conflicts.
+3. **The product.** Upload, inspect source facts, compare, record corrections and export the evidence/review record.
+4. **AMD's role.** MiMo-V2.6-Flash via AMD Token Factory performs live fact extraction. Python parses inputs, Pydantic and source checks validate output, deterministic rules compare values, and people decide what to confirm.
+5. **Boundaries.** HOLD for critical conflicts; REVIEW for missing data, incomplete processing or unverified completeness; READY only under configured rules. Independent human production approval remains necessary.
+6. **Evidence.** 86 tests, 27 deterministic synthetic cases and a hosted AMD smoke test. The live three-document hoodie example took 20.44 seconds once. Do not present template results as model accuracy or one smoke test as production reliability.
+7. **Business potential.** Expected benefits are less manual comparison and better traceability. Pilot measurements, pricing and savings are not yet validated.
+8. **Try it.** Point judges to the hosted app, top-level examples folder, source code and verification records.
+
+The project brief targets Reinvent Commerce; Intelligent Industry is also relevant to manufacturing quality. Select the appropriate challenge in the actual submission form. The final recording and event submission still require completion.

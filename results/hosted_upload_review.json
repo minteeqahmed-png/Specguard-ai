@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-15T18:57:53.983954+00:00",
+  "url": "https://specguard-ai-dev.streamlit.app/",
+  "passed": true,
+  "checks": [
+    "Uploaded synthetic TXT, PDF and CSV: verified and produced expected HOLD conflicts",
+    "All four download formats opened and contained the expected evidence/findings",
+    "Reviewer corrections reached READY, preserved original facts and exported review history",
+    "Corrupt PDF shows explicit error, clears old review and blocks READY"
+  ],
+  "scope": "Public hosted Demo Mode only; synthetic documents/reviewer. No AMD calls or private files."
+}

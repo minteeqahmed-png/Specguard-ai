@@ -1,6 +1,6 @@
 # Synthetic evaluation data
 
-All documents are invented. No real customer information is included.
+All documents are invented. No real customer information is included. For a quick judge walkthrough and individual downloads, start with the top-level [examples folder](../examples/README.md).
 
 `initial/` contains a buyer message for 500 navy jerseys, a PDF for 450 royal-blue jerseys, and a size CSV totaling 500. Expected findings: quantity mismatch, color mismatch, and size total versus PDF quantity mismatch.
 

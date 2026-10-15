@@ -8,7 +8,7 @@ Use [Streamlit Community Cloud](https://share.streamlit.io/) for the public demo
 
 1. Sign in with GitHub and choose **Create app**, then **Yup, I have an app** (or the equivalent existing GitHub app option).
 2. Select repository `minteeqahmed-png/Specguard-ai`.
-3. Select branch `codex/specguard-mvp`. The implementation is on this review branch; main does not yet contain the app.
+3. For a new deployment, select branch `main`. The existing hosted app follows `codex/specguard-mvp`; keep that branch attached unless the owner changes the deployment settings.
 4. Set the main file path to `app.py`.
 5. In **Advanced settings**, choose **Python 3.12** and leave **Secrets empty**. The app defaults to Demo Mode without credentials.
 6. Optionally choose an available subdomain, then click **Deploy**. Wait for dependency installation and app startup. Streamlit supplies the actual `*.streamlit.app` URL; do not assume a particular name is available.

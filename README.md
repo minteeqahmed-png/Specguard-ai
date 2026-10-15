@@ -2,51 +2,71 @@
 
 **Manufacturing Order Intelligence — evidence before production.**
 
-**[Open the hosted demo](https://specguard-ai-dev.streamlit.app/)** · AMD Token Factory Live Mode verified on October 16, 2026; use synthetic documents for the demonstration.
+[Open the working app](https://specguard-ai-dev.streamlit.app/) · [Download example documents](https://github.com/minteeqahmed-png/Specguard-ai/raw/refs/heads/main/examples/SpecGuard-Example-Documents.zip) · [Browse the examples](examples/README.md) · [View pitch slides](presentation/SpecGuard-AI-Pitch.pdf)
 
-SpecGuard AI compares customer messages, technical PDFs and size spreadsheets before manufacturing begins. It turns document requirements into validated facts, flags contradictions, shows their source evidence and records human decisions without rewriting the original facts.
+SpecGuard AI helps a manufacturer's order coordinator compare buyer messages, technical PDFs and size spreadsheets before production. It extracts source-linked facts, flags contradictory requirements and records human decisions without rewriting original evidence. The hosted prototype uses **AMD Token Factory / MiMo-V2.6-Flash** for live extraction.
 
-**Working hosted MVP with verified AMD Token Factory live inference.** Demo Mode is deterministic template extraction and never claims to run AMD inference. Live Mode has processed the synthetic sample order using AMD Token Factory's `MiMo-V2.6-Flash`. Independent GPU execution evidence and broader model evaluation remain outstanding.
+## Try it in a few minutes
 
-## Quick start — Windows / Python 3.12
+1. Download the [example ZIP](examples/SpecGuard-Example-Documents.zip?raw=true) and extract it.
+2. Open the app and choose **Upload documents**. Upload `buyer_order.txt`, `tech_pack.pdf` and `size_quantities.csv` together.
+3. Click **Extract facts**, inspect the quotes and locations, then **Compare requirements**.
+4. Expect **HOLD** with three deliberate findings:
+
+| Finding | Buyer / size CSV | Technical PDF |
+| --- | --- | --- |
+| Quantity mismatch | 300 pieces | 280 pieces |
+| Color mismatch | black | charcoal |
+| Size total mismatch | 300 pieces | 280 pieces |
+
+The same ZIP is available from **Download example documents** in the app's sidebar. All example data is synthetic. [Individual downloads and correction walkthrough](examples/README.md) show how reviewer confirmation can reach READY while retaining the original facts. To try a consistent order, choose **Synthetic sample -> 01_consistent**. READY never authorizes production.
+
+![SpecGuard AI: evidence before production](presentation/cover.png)
+
+## What works
+
+- Upload UTF-8 TXT/CSV and text-based PDFs with line, page and record references.
+- Extract manufacturing requirements and show their literal source evidence.
+- Compare quantity, size totals, product, unit, color, material, printing, embroidery, secondary colors and deadlines.
+- Distinguish contradictions from missing information and failed/incomplete extraction.
+- Record validated human corrections separately and recheck their consistency.
+- Download extraction JSON, conflict CSV, full analysis JSON and clarification TXT.
+
+**HOLD** means unresolved critical contradictions. **REVIEW** means required information, a major finding or processing/verification remains incomplete. **READY** means no configured blocker remains; independent human production approval is still required.
+
+## AMD integration and verification
+
+The hosted app runs Live Mode through the authenticated AMD Token Factory API. A hosted TXT/PDF/CSV order was verified on October 16, 2026: all three live extractions passed validation and produced the expected HOLD conflicts. The one observed order took **20.44 seconds**, including network and processing. This is a smoke test, not an accuracy, latency or reliability benchmark. [Actual verification record](results/hosted_live_smoke.json)
+
+Live responses pass Pydantic schema, quoted-evidence and source-location checks. Supported labeled templates and exact `size,quantity` CSVs also undergo independent value and coverage verification. Wrong values, omitted contradictions and changed size rows cannot silently produce READY. Other layouts and free-form prose retain model output for inspection but remain REVIEW because completeness is unverified.
+
+Invalid extraction responses get at most one fresh validation retry. HTTP failures, quota limits and truncated output remain explicit. Live requests never fall back to demo facts. API access alone does not independently verify a GPU model or hardware telemetry.
+
+Demo Mode is a separate deterministic template parser, available locally without an API key. Use the visible mode banner and exported mode to distinguish it from live inference.
+
+## Run locally — Python 3.12
 
 ```powershell
 git clone https://github.com/minteeqahmed-png/Specguard-ai.git
 cd Specguard-ai
-git switch codex/specguard-mvp
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements.txt
 .\.venv\Scripts\python -m streamlit run app.py --server.address=127.0.0.1
 ```
 
-Open http://localhost:8501. No account, API key, GPU or paid service is needed for Demo Mode. After the review branch is merged, use main instead of switching branches. On Linux/macOS replace `.\.venv\Scripts\python` with `.venv/bin/python`.
+Open http://localhost:8501. On Linux/macOS use `.venv/bin/python`. Local runs default to Demo Mode. For live use, copy `.env.example` to an untracked `.env`, supply your own private credentials and restart. Never put keys in GitHub. [Cloud/local deployment](docs/deployment.md) · [AMD setup](docs/amd_setup.md)
 
-1. Select the initial synthetic sample or upload one order's documents.
-2. Click **Extract facts** and inspect the values and source references.
-3. Click **Compare requirements**. The initial example produces HOLD for quantity/size conflicts and flags navy versus royal blue.
-4. Record corrected values, a reviewer and confirmation notes. Corrections are rechecked separately; original source values remain intact.
-5. Record human review and download the reports before closing the session.
+## Validation
 
-## What works
+| Check | Observed result | Scope |
+| --- | --- | --- |
+| Automated tests | 86 passed | Parser, schema, failures, reconciliation, corrections, exports and Streamlit flows |
+| Synthetic regression evaluation | 27/27 statuses; 81/81 documents; 399/399 field values | Deterministic templates, not model accuracy |
+| Original fault probes | All nine blocked READY | Includes wrong value with a real quote and omitted conflicting quantity |
+| Hosted Demo Mode | Uploads, HOLD/READY, review history, reset, four exports and corrupt-file blocking passed | Synthetic browser checks |
+| Hosted AMD Live Mode | Three documents verified; all three intended conflicts detected | One synthetic order |
 
-- Multiple UTF-8 TXT/CSV and digital PDF inputs, with previews and filename, line/page/record evidence.
-- Errors for empty, corrupt, unsupported, oversized or incorrectly encoded input; warnings for missing CSV cells and unread PDF pages.
-- Pydantic-validated extraction with evidence quote checks and independent value/coverage checks for labeled templates and size CSVs. Other live documents remain REVIEW because their extraction completeness is unverified.
-- Deterministic quantity, size-total, product, unit, color, material, printing, embroidery, secondary-color and deadline comparisons.
-- HOLD for unresolved critical conflicts; REVIEW for major findings, missing mandatory information or incomplete processing; READY only when configured checks clear. **READY never authorizes production.**
-- Separate human corrections, reviewer notes, correction validation and review history.
-- Extraction JSON, conflict CSV, full-analysis JSON and customer-clarification TXT downloads.
-- 27 synthetic evaluation cases, Pytest coverage and GitHub Actions configuration.
-
-## Configuration and AMD
-
-For a free hosted demo, follow [Streamlit Community Cloud deployment](docs/deployment.md). Select branch `codex/specguard-mvp`, entrypoint `app.py`, Python 3.12, and leave Secrets empty for Demo Mode. The [hosted app](https://specguard-ai-dev.streamlit.app/) now runs Live Mode. A hosted synthetic TXT/PDF/CSV upload produced verified MiMo extractions and all three expected conflicts; see the [live smoke test record](results/hosted_live_smoke.json). The earlier hosted Demo Mode upload, resolution and export checks also passed. Local launches should explicitly pass `--server.address=127.0.0.1`; the shared config leaves the bind address to the hosting platform.
-
-Copy `.env.example` to `.env` only when configuring the live endpoint. The app reads `SPECGUARD_MODE`, `VLLM_BASE_URL`, `VLLM_API_KEY`, `VLLM_MODEL` and `REQUEST_TIMEOUT`. Use `SPECGUARD_MODE=live` to enable real requests; the base URL must include `/v1`. The self-hosted example uses `Qwen/Qwen2.5-7B-Instruct`. For AMD Token Factory, use `https://developer.amd.com.cn/radeon/api/v1`, a privately stored team key, and an available model such as `MiMo-V2.6-Flash`; confirm current availability with **Check model connection**. A timeout of 180 seconds was used for the live smoke test. `DeepSeek-V4-Flash` produced intermittent invalid or omitted facts in these samples, so it is not the current demo choice. Never commit `.env` or API keys.
-
-[AMD setup](docs/amd_setup.md) covers MI300X, ROCm/vLLM, model serving, private SSH forwarding, test requests, telemetry and shutdown. API reachability alone does not prove AMD hardware execution. Invalid extraction JSON, field values or evidence trigger at most one fresh extraction attempt with structural validation feedback. Both attempts undergo the same schema and source-evidence checks. Persistent failures remain explicit and block a complete analysis; no invalid fields are silently discarded and the app never falls back to demo extraction. Network failures, HTTP errors and truncated output are not automatically retried. A validation retry can approximately double a document's request time and token usage.
-
-## Testing and actual evaluation
+Run the checks:
 
 ```powershell
 .\.venv\Scripts\python -m pytest -q
@@ -54,39 +74,28 @@ Copy `.env.example` to `.env` only when configuring the live endpoint. The app r
 .\.venv\Scripts\python scripts/evaluate.py --output results/local_evaluation.json
 ```
 
-Local validation on October 14, 2026: **86 tests passed** on Windows / Python 3.12.4. Includes parsing, invalid inputs, schema checks, conflicts, missing fields, correction safety, API mocks, bounded extraction retries, rejection of empty live extractions, false-READY regressions, encrypted PDF and page limits, exports and Streamlit extraction/comparison/resolution flows.
+[Results and metric definitions](results/README.md) · [Dataset construction](sample_data/README.md) · [Reliability fixes](docs/reliability-fixes.md). `requirements-lock.txt` captures the tested Windows package environment; `requirements.txt` pins the top-level packages.
 
-The checked-in [demo evaluation](results/demo_evaluation.json) processed **81/81 documents** across **27 cases**: conflict precision/recall/F1 1.0, zero false positives/negatives, 399/399 expected field values matched, and 27/27 expected statuses. The actual run took approximately 0.55 seconds. This is deterministic evaluation on a small constructed template set, **not real-world accuracy, AMD latency or a model benchmark**. The result file records the exact timing and mode.
+## Presentation and submission material
 
-[Evaluation methodology](results/README.md) explains metric denominators. [Dataset notes](sample_data/README.md) describe case construction and limitations. `requirements-lock.txt` records the tested Windows package environment.
+- [Eight-slide pitch PDF](presentation/SpecGuard-AI-Pitch.pdf)
+- [Cover image](presentation/cover.png) and [editable vector source](presentation/cover.svg)
+- [Submission descriptions and technology tags](docs/submission.md)
+- [Demo recording script](docs/demo_script.md)
+- [Pitch content and speaker notes](docs/pitch.md)
 
-## Architecture and files
+A recorded demo video and the actual event-form submission remain outstanding. The PDF and cover are completed repository assets; the recording script is not a recorded video.
 
-Actual local Demo Mode screenshot (synthetic order, October 12, 2026):
+## Architecture and boundaries
 
-![Quantity mismatch with source evidence](docs/screenshots/dashboard.png)
+`app.py` provides Streamlit UI. `parser.py` parses bounded inputs; `ai_client.py` extracts and verifies facts; `schemas.py` validates structure; `reconciliation.py` compares source and corrected views; `pipeline.py` preserves failures; `reporting.py` builds exports. [Architecture and rules](docs/architecture.md)
 
-`app.py` is the Streamlit interface. `specguard/parser.py` parses inputs; `schemas.py` validates facts; `ai_client.py` handles demo/live extraction; `reconciliation.py` compares facts and corrected views; `pipeline.py` preserves failures; `reporting.py` builds exports; `config.py` loads settings. See the [architecture diagram and rules](docs/architecture.md).
+The prototype handles one product/order at a time: at most 12 files / 30 MB total, 10 MB per file, 50 PDF pages and 100,000 extracted characters per document. Live input is limited to 16,000 characters per document and fails rather than silently truncating. No OCR, XLSX, multi-item reconciliation, fuzzy matching or unit conversion. PDF text extraction does not guarantee visual table fidelity.
 
-The application holds uploaded documents and review state in memory. It does not silently save private files, send clarification messages or make production decisions. Changing inputs or re-extracting clears prior results and review state.
+Review state is session-only and reviewer names are self-entered. There is no built-in login or durable signed audit database. For internal-team use, restrict hosted viewers; public live requests consume shared AMD quota. The Token Factory trial supports development without a production SLA. Broad repeated/adversarial live evaluation, production deployment controls and customer pilot measurements remain future work. Docker packaging is provided but has not passed a local build/runtime check.
 
-## Limits and remaining work
-
-One product and one order per analysis. Maximum 12 documents / 30 MB total; 10 MB per file; 50 PDF pages; 100,000 extracted characters per file. Live extraction accepts at most 16,000 characters per document and fails rather than silently truncating. No OCR, XLSX, fuzzy color matching, unit conversion, multi-item reconciliation or persistent signed audit database. PDF table layout can be ambiguous. Matching a quote alone does not prove its interpretation or coverage. Live labeled templates and exact size,quantity CSVs must also match independently parsed source facts, including contradictory lines. Other layouts and free-form prose remain REVIEW even when valid facts are available. Check the originals and supply supported templates to proceed; recording a review cannot bypass this gate. See [reliability fixes](docs/reliability-fixes.md).
-
-Self-hosted AMD serving, independent GPU execution/utilization evidence and broad model accuracy/latency evaluation remain untested. Live Token Factory smoke tests on synthetic documents are not an accuracy benchmark. Docker packaging is supplied but has not been built here. The app is hosted on Streamlit Community Cloud with AMD Live Mode enabled. A recorded video, final slides and the event submission remain outstanding.
-
-## Documentation
-
-- [Cloud and local deployment](docs/deployment.md)
-- [AMD setup and evidence checklist](docs/amd_setup.md)
-- [Architecture](docs/architecture.md)
-- [Five-minute demo script](docs/demo_script.md)
-- [Pitch content](docs/pitch.md)
-- [Development stages](docs/development.md)
-
-Expected business benefits include less manual comparison, clearer customer questions and better traceability. Savings and customer outcomes remain unmeasured. Future per-order or monthly subscription pricing is a hypothesis, not an implemented payment feature.
+Expected benefits and future subscription/per-order pricing remain hypotheses; customer savings and demand have not been measured.
 
 ## License
 
-MIT for project code; see [LICENSE](LICENSE) and [licensing notes](docs/licensing.md). PDF extraction uses pypdf and sample generation uses ReportLab. Third-party packages and model weights retain their own licenses and notices.
+MIT for project code; see [LICENSE](LICENSE) and [third-party licensing notes](docs/licensing.md). PDF reading uses pypdf and fixture generation uses ReportLab. Third-party distributions and model weights retain their own licenses and notices.
