@@ -18,9 +18,9 @@ The repository includes `requirements.txt` and the theme. The shared config deli
 
 [Official deployment instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy) describe repository selection, Python version and the Secrets form. Hosting changes pushed to the selected branch trigger updates. Free hosting has resource limits and is not a production availability guarantee.
 
-## Migrating the existing app to main
+## Deployment branch changes
 
-The original hosted app follows `codex/specguard-mvp`. Keep that branch until the owner has migrated the deployment to `main`. Streamlit identifies deployments by repository, branch and entrypoint; changing the branch requires deleting and redeploying the app according to its [official migration instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/rename-your-app).
+The hosted app now deploys from `main`; the owner confirmed the migration and the public app loaded in Live Mode afterward. For any future branch change, keep the previous branch until the replacement deployment is verified. Streamlit identifies deployments by repository, branch and entrypoint; changing the branch requires deleting and redeploying the app according to its [official migration instructions](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/rename-your-app).
 
 Before deleting the old app, privately save its Secrets and note its subdomain and sharing settings. Redeploy this repository using branch `main`, entrypoint `app.py` and Python 3.12, restore the private settings, and verify the app at its intended URL. Only then delete the old Git branch. Never paste the private Secrets into an issue, commit or pull request.
 
