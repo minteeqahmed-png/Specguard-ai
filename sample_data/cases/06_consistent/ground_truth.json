@@ -1,0 +1,109 @@
+{
+  "case_id": "06_consistent",
+  "group": "consistent",
+  "expected_issue_ids": [],
+  "expected_status": "READY",
+  "documents": {
+    "buyer_message.txt": [
+      {
+        "field": "product",
+        "value": "Team tracksuit",
+        "quote": "Product: Team tracksuit",
+        "location": "line 1"
+      },
+      {
+        "field": "quantity",
+        "value": 500,
+        "quote": "Quantity: 500",
+        "location": "line 2"
+      },
+      {
+        "field": "unit",
+        "value": "pieces",
+        "quote": "Unit: pieces",
+        "location": "line 3"
+      },
+      {
+        "field": "color",
+        "value": "navy blue",
+        "quote": "Color: navy blue",
+        "location": "line 4"
+      },
+      {
+        "field": "material",
+        "value": "polyester",
+        "quote": "Material: polyester",
+        "location": "line 5"
+      },
+      {
+        "field": "printing",
+        "value": "sublimation",
+        "quote": "Printing: sublimation",
+        "location": "line 6"
+      },
+      {
+        "field": "deadline",
+        "value": "2026-11-20",
+        "quote": "Deadline: 2026-11-20",
+        "location": "line 7"
+      }
+    ],
+    "tech_pack.pdf": [
+      {
+        "field": "product",
+        "value": "Team tracksuit",
+        "quote": "Product: Team tracksuit",
+        "location": "page 1"
+      },
+      {
+        "field": "quantity",
+        "value": 500,
+        "quote": "Quantity: 500",
+        "location": "page 1"
+      },
+      {
+        "field": "unit",
+        "value": "pieces",
+        "quote": "Unit: pieces",
+        "location": "page 1"
+      },
+      {
+        "field": "color",
+        "value": "navy blue",
+        "quote": "Color: navy blue",
+        "location": "page 1"
+      },
+      {
+        "field": "material",
+        "value": "polyester",
+        "quote": "Material: polyester",
+        "location": "page 1"
+      },
+      {
+        "field": "printing",
+        "value": "sublimation",
+        "quote": "Printing: sublimation",
+        "location": "page 1"
+      },
+      {
+        "field": "deadline",
+        "value": "2026-11-20",
+        "quote": "Deadline: 2026-11-20",
+        "location": "page 1"
+      }
+    ],
+    "quantities.csv": [
+      {
+        "field": "size_quantities",
+        "value": {
+          "S": 100,
+          "M": 150,
+          "L": 150,
+          "XL": 100
+        },
+        "quote": "size: S; quantity: 100\nsize: M; quantity: 150\nsize: L; quantity: 150\nsize: XL; quantity: 100",
+        "location": "document"
+      }
+    ]
+  }
+}

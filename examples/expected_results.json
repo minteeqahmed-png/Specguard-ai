@@ -1,0 +1,19 @@
+{
+  "synthetic": true,
+  "expected_status": "HOLD",
+  "expected_issue_ids": [
+    "conflict:quantity",
+    "conflict:color",
+    "size_total:0"
+  ],
+  "files": [
+    "buyer_order.txt",
+    "tech_pack.pdf",
+    "size_quantities.csv"
+  ],
+  "corrections": {
+    "conflict:quantity": "300",
+    "conflict:color": "black",
+    "size_total:0": "{\"S\":75,\"M\":100,\"L\":75,\"XL\":50}"
+  }
+}

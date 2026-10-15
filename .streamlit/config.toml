@@ -1,0 +1,21 @@
+[theme]
+base = "light"
+primaryColor = "#00766F"
+backgroundColor = "#F3F6FA"
+secondaryBackgroundColor = "#E5EDF2"
+textColor = "#14233B"
+font = "sans serif"
+
+[theme.sidebar]
+backgroundColor = "#101F34"
+secondaryBackgroundColor = "#1B344A"
+textColor = "#E5EFFA"
+primaryColor = "#8EE0D3"
+
+[server]
+# Let the hosting platform select the bind address. For local use, pass
+# --server.address=127.0.0.1 when launching Streamlit.
+maxUploadSize = 10
+
+[browser]
+gatherUsageStats = false

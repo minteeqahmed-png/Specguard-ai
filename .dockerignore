@@ -1,0 +1,12 @@
+.git
+.venv
+.env
+.streamlit/secrets.toml
+.env.*
+__pycache__
+.pytest_cache
+private_documents
+*.pem
+*.key
+*.log
+results/local_*

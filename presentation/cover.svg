@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="SpecGuard AI: evidence before production">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102238"/><stop offset="1" stop-color="#1D4658"/></linearGradient><filter id="shadow"><feDropShadow dx="10" dy="18" stdDeviation="14" flood-opacity=".3"/></filter></defs>
+<rect width="1600" height="900" fill="url(#bg)"/><circle cx="1300" cy="450" r="280" fill="none" stroke="#477786" opacity=".3"/><circle cx="1300" cy="450" r="350" fill="none" stroke="#477786" opacity=".2"/>
+<g font-family="Arial,Helvetica,sans-serif"><text x="90" y="120" fill="#8EE0D3" font-size="23" letter-spacing="5">MANUFACTURING ORDER INTELLIGENCE</text>
+<text x="85" y="300" fill="#F3F7FA" font-size="108" font-weight="700">SpecGuard AI</text>
+<text x="90" y="445" fill="#F3F7FA" font-size="72" font-weight="700">Evidence before</text><text x="90" y="535" fill="#8EE0D3" font-size="72" font-weight="700">production.</text>
+<text x="90" y="635" fill="#C1D5DF" font-size="30">Documents to source facts to human review.</text>
+<text x="90" y="805" fill="#8EE0D3" font-size="24">LIVE INFERENCE VIA AMD TOKEN FACTORY</text>
+<g transform="translate(1090 220) rotate(8 180 220)" filter="url(#shadow)"><rect x="60" y="60" width="320" height="410" rx="30" fill="#254B61"/><rect x="30" y="30" width="320" height="410" rx="30" fill="#367A82"/><rect width="320" height="410" rx="30" fill="#E8F3F5"/><rect x="84" y="82" width="150" height="150" rx="30" fill="#146B74"/><text x="160" y="180" text-anchor="middle" fill="#F3F7FA" font-size="70" font-weight="700">SG</text><rect x="50" y="285" width="220" height="12" rx="6" fill="#A1C7CE"/><rect x="50" y="320" width="170" height="12" rx="6" fill="#A1C7CE"/></g>
+</g></svg>

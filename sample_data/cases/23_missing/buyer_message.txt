@@ -1,0 +1,6 @@
+Product: Embroidered shirt
+Quantity: 500
+Unit: pieces
+Material: polyester
+Printing: sublimation
+Deadline: 2026-11-20

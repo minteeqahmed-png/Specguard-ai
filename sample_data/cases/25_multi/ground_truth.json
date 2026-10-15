@@ -1,0 +1,114 @@
+{
+  "case_id": "25_multi",
+  "group": "multi",
+  "expected_issue_ids": [
+    "conflict:quantity",
+    "size_total:0",
+    "conflict:color",
+    "conflict:material"
+  ],
+  "expected_status": "HOLD",
+  "documents": {
+    "buyer_message.txt": [
+      {
+        "field": "product",
+        "value": "Football jersey",
+        "quote": "Product: Football jersey",
+        "location": "line 1"
+      },
+      {
+        "field": "quantity",
+        "value": 500,
+        "quote": "Quantity: 500",
+        "location": "line 2"
+      },
+      {
+        "field": "unit",
+        "value": "pieces",
+        "quote": "Unit: pieces",
+        "location": "line 3"
+      },
+      {
+        "field": "color",
+        "value": "navy blue",
+        "quote": "Color: navy blue",
+        "location": "line 4"
+      },
+      {
+        "field": "material",
+        "value": "polyester",
+        "quote": "Material: polyester",
+        "location": "line 5"
+      },
+      {
+        "field": "printing",
+        "value": "sublimation",
+        "quote": "Printing: sublimation",
+        "location": "line 6"
+      },
+      {
+        "field": "deadline",
+        "value": "2026-11-20",
+        "quote": "Deadline: 2026-11-20",
+        "location": "line 7"
+      }
+    ],
+    "tech_pack.pdf": [
+      {
+        "field": "product",
+        "value": "Football jersey",
+        "quote": "Product: Football jersey",
+        "location": "page 1"
+      },
+      {
+        "field": "quantity",
+        "value": 450,
+        "quote": "Quantity: 450",
+        "location": "page 1"
+      },
+      {
+        "field": "unit",
+        "value": "pieces",
+        "quote": "Unit: pieces",
+        "location": "page 1"
+      },
+      {
+        "field": "color",
+        "value": "royal blue",
+        "quote": "Color: royal blue",
+        "location": "page 1"
+      },
+      {
+        "field": "material",
+        "value": "cotton",
+        "quote": "Material: cotton",
+        "location": "page 1"
+      },
+      {
+        "field": "printing",
+        "value": "sublimation",
+        "quote": "Printing: sublimation",
+        "location": "page 1"
+      },
+      {
+        "field": "deadline",
+        "value": "2026-11-20",
+        "quote": "Deadline: 2026-11-20",
+        "location": "page 1"
+      }
+    ],
+    "quantities.csv": [
+      {
+        "field": "size_quantities",
+        "value": {
+          "S": 100,
+          "M": 150,
+          "L": 150,
+          "XL": 100
+        },
+        "quote": "size: S; quantity: 100\nsize: M; quantity: 150\nsize: L; quantity: 150\nsize: XL; quantity: 100",
+        "location": "document"
+      }
+    ]
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "generated_at": "2026-10-14T10:45:56.315237+00:00",
+  "mode": "demo",
+  "python": "3.12.4",
+  "platform": "Windows",
+  "scope": "Synthetic template extraction and deterministic rule evaluation; not real-world accuracy or AMD performance.",
+  "case_count": 27,
+  "true_positive_count": 32,
+  "false_positive_count": 0,
+  "false_negative_count": 0,
+  "conflict_precision": 1.0,
+  "conflict_recall": 1.0,
+  "f1": 1.0,
+  "field_extraction_accuracy": 1.0,
+  "field_correct": 399,
+  "field_total": 399,
+  "successfully_processed_documents": 81,
+  "expected_documents": 81,
+  "status_correct": 27,
+  "processing_seconds": 0.5481558999890694,
+  "inference_request_seconds": null,
+  "amd_hardware_verified": false,
+  "cases": [
+    {
+      "case": "01_consistent",
+      "expected": [],
+      "actual": [],
+      "status": "READY",
+      "errors": [],
+      "processing_seconds": 0.022298800002317876
+    },
+    {
+      "case": "02_consistent",
+      "expected": [],
+      "actual": [],
+      "status": "READY",
+      "errors": [],
+      "processing_seconds": 0.00997710000956431
+    },
+    {
+      "case": "03_consistent",
+      "expected": [],
+      "actual": [],
+      "status": "READY",
+      "errors": [],
+      "processing_seconds": 0.009922500001266599
+    },
+    {
+      "case": "04_consistent",
+      "expected": [],
+      "actual": [],
+      "status": "READY",
+      "errors": [],
+      "processing_seconds": 0.009243000007700175
+    },
+    {
+      "case": "05_consistent",
+      "expected": [],
+      "actual": [],
+      "status": "READY",
+      "errors": [],
+      "processing_seconds": 0.009320500001194887
+    },
+    {
+      "case": "06_consistent",
+      "expected": [],
+      "actual": [],
+      "status": "READY",
+      "errors": [],
+      "processing_seconds": 0.00897629999963101
+    },
+    {
+      "case": "07_quantity",
+      "expected": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.00888219999615103
+    },
+    {
+      "case": "08_quantity",
+      "expected": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.00972889999684412
+    },
+    {
+      "case": "09_quantity",
+      "expected": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.00896229999489151
+    },
+    {
+      "case": "10_quantity",
+      "expected": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.008557299996027723
+    },
+    {
+      "case": "11_quantity",
+      "expected": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.008630100011941977
+    },
+    {
+      "case": "12_color",
+      "expected": [
+        "conflict:color"
+      ],
+      "actual": [
+        "conflict:color"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.009224800000083633
+    },
+    {
+      "case": "13_color",
+      "expected": [
+        "conflict:color"
+      ],
+      "actual": [
+        "conflict:color"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.013898399993195198
+    },
+    {
+      "case": "14_color",
+      "expected": [
+        "conflict:color"
+      ],
+      "actual": [
+        "conflict:color"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.008712299997569062
+    },
+    {
+      "case": "15_color",
+      "expected": [
+        "conflict:color"
+      ],
+      "actual": [
+        "conflict:color"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.009561900005792268
+    },
+    {
+      "case": "16_material",
+      "expected": [
+        "conflict:material"
+      ],
+      "actual": [
+        "conflict:material"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.009656900001573376
+    },
+    {
+      "case": "17_material",
+      "expected": [
+        "conflict:material"
+      ],
+      "actual": [
+        "conflict:material"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.009222000007866882
+    },
+    {
+      "case": "18_material",
+      "expected": [
+        "conflict:material"
+      ],
+      "actual": [
+        "conflict:material"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.009803299995837733
+    },
+    {
+      "case": "19_printing",
+      "expected": [
+        "conflict:printing"
+      ],
+      "actual": [
+        "conflict:printing"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.008936399986851029
+    },
+    {
+      "case": "20_printing",
+      "expected": [
+        "conflict:printing"
+      ],
+      "actual": [
+        "conflict:printing"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.00955719999910798
+    },
+    {
+      "case": "21_printing",
+      "expected": [
+        "conflict:printing"
+      ],
+      "actual": [
+        "conflict:printing"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.008631300006527454
+    },
+    {
+      "case": "22_missing",
+      "expected": [
+        "missing:material"
+      ],
+      "actual": [
+        "missing:material"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.00814070001069922
+    },
+    {
+      "case": "23_missing",
+      "expected": [
+        "missing:color"
+      ],
+      "actual": [
+        "missing:color"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.009883099992293864
+    },
+    {
+      "case": "24_missing",
+      "expected": [
+        "missing:printing"
+      ],
+      "actual": [
+        "missing:printing"
+      ],
+      "status": "REVIEW",
+      "errors": [],
+      "processing_seconds": 0.008633899997221306
+    },
+    {
+      "case": "25_multi",
+      "expected": [
+        "conflict:color",
+        "conflict:material",
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:color",
+        "conflict:material",
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.008563300012610853
+    },
+    {
+      "case": "26_multi",
+      "expected": [
+        "conflict:color",
+        "conflict:material",
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:color",
+        "conflict:material",
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.011239200001000427
+    },
+    {
+      "case": "27_multi",
+      "expected": [
+        "conflict:color",
+        "conflict:material",
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "actual": [
+        "conflict:color",
+        "conflict:material",
+        "conflict:quantity",
+        "size_total:0"
+      ],
+      "status": "HOLD",
+      "errors": [],
+      "processing_seconds": 0.008922100008931011
+    }
+  ]
+}
